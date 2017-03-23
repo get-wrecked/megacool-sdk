@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -euo pipefail
+
+main () {
+    sanity_check
+    install_python_deps
+}
+
+sanity_check () {
+    which virtualenv >/dev/null \
+        || (
+            echo "Can't find virtualenv, install that first: sudo pip install virtualenv"
+            exit 1
+            )
+}
+
+install_python_deps () {
+    test -d venv || virtualenv venv
+    install_python_dep awscli
+    install_python_dep psycopg2
+}
+
+install_python_dep () {
+    local dep=$1
+    ./venv/bin/pip freeze | grep -iq "$dep" || ./venv/bin/pip install "$dep"
+}
+
+main
