@@ -1,2 +1,3 @@
 # sdk-release
-Builds and releases all the SDK flavors
+
+Authoritative change log source and releases all the SDKs.
