@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.2.2 - 2017-03-27
+==================
+
+## Fixed
+- iOS native: Visually broken GIF if frame width was not divisible by 4.
+- All code is now built for minimum iOS version 7.0. Some code was targeting 9.3, causing warnings
+ in XCode but otherwise harmless.
+
+
 2.2.1 - 2017-03-23
 ==================
 
