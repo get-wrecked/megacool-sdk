@@ -114,7 +114,7 @@ def build_podspec(version, release_url):
             s.homepage = "https://megacool.co"
             s.license = {
                 :type => "Commercial",
-                :file => "megacool/LICENSE.md"
+                :file => "LICENSE.md"
             }
             s.authors = {
                 "Nicolaj Broby Petersen" => "nicolaj@megacool.co",
