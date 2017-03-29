@@ -19,6 +19,9 @@ install_python_deps () {
     test -d venv || virtualenv venv
     install_python_dep awscli
     install_python_dep psycopg2
+    install_python_dep jinja2
+    install_python_dep requests
+    install_python_dep boto3
 }
 
 install_python_dep () {
