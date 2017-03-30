@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.2.3 - 2017-03-29
+==================
+
+## Fixed
+- Fix "duplicate symbol" linker errors that could occur in some configurations.
+
+
 2.2.2 - 2017-03-27
 ==================
 
