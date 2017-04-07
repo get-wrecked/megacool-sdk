@@ -67,7 +67,7 @@ def build_release_archive(version):
 def upload_release(version, path):
     s3 = boto3.resource('s3')
     s3_args = {
-        'ContentType': 'image/gif',
+        'ContentType': 'application/gzip',
         'ACL': 'public-read',
     }
     key = 'megacool-ios-sdk-v{version}.tar.gz'.format(version=version)
