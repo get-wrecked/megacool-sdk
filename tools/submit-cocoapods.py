@@ -70,7 +70,7 @@ def upload_release(version, path):
         'ContentType': 'application/gzip',
         'ACL': 'public-read',
     }
-    key = 'megacool-ios-sdk-v{version}.tar.gz'.format(version=version)
+    key = 'megacool-sdk-ios-v{version}.tar.gz'.format(version=version)
     bucket = 'megacool-files'
     with open(path, 'rb') as fh:
         s3.Bucket(bucket).upload_fileobj(fh, key, ExtraArgs=s3_args)
