@@ -130,7 +130,7 @@ def insert_releases_to_database(releases):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('changelog')
+    parser.add_argument('changelog', default='CHANGELOG.md')
     return parser.parse_args()
 
 
