@@ -42,17 +42,17 @@ class Release(object):
 
 
     def download_url(self, platform):
+        base_url = 'https://megacool-files.s3-accelerate.amazonaws.com'
         if platform == 'Unity':
             filename = 'Megacool.unitypackage'
         elif platform == 'iOS':
-            filename = 'Megacool.framework.tar.gz'
+            return '%s/megacool-sdk-ios-v%s.tar.gz' % (base_url, self.version)
         elif platform == 'Android':
             filename = 'Megacool.aar'
         else:
             raise ValueError('Invalid platform: %s' % platform)
 
-        return 'https://megacool-files.s3-accelerate.amazonaws.com/v%s/%s' % (
-            self.version, filename)
+        return '%s/v%s/%s' % (base_url, self.version, filename)
 
 
     def __str__(self):
