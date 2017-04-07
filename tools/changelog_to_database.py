@@ -3,13 +3,16 @@
 import argparse
 import datetime
 import os
-import psycopg2
 import re
+
+import psycopg2
+
 
 DATABASE = os.environ.get('DATABASE_URL', 'postgres://vagrant:vagrant@10.10.10.20/vagrant')
 VERSION_RE = re.compile(r'^(\d+)\.(\d+)\.(\d+)((?:-)(\w+))?$')
 HEADER_RE = re.compile(r'^(' + VERSION_RE.pattern[1:-1] + r') - (\d+-\d+-\d+)$')
 SKIP_LINE_RE = re.compile(r'^[=-]+$')
+
 
 class Release(object):
 
