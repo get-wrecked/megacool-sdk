@@ -39,7 +39,7 @@ def main():
     modify_manifest(unpacked_aar, args.application_id)
 
     repack_aar(unpacked_aar, megacool_aar)
-    repack_unitypackage(unpacked_unitypackage, args.destination)
+    repack_unitypackage(unpacked_unitypackage, args.input)
 
     shutil.rmtree(unpacked_unitypackage)
     shutil.rmtree(unpacked_aar)
@@ -101,8 +101,6 @@ def get_args():
         help='Path to the unity package to modify')
     parser.add_argument('application_id',
         help='The application id to set in the new package')
-    parser.add_argument('destination',
-        help='Where to save the results')
     return parser.parse_args()
 
 
