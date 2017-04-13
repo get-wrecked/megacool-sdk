@@ -6,6 +6,8 @@ or use Unity < 5.5.
 Basically hardcodes the `${applicationId}` used in gradle projects with your
 application id since the package is not compatible with Unity's internal
 packaging system or the legacy ADT system.
+
+The input can also be a normal Android .aar.
 """
 
 # Internals:
@@ -32,16 +34,24 @@ import zipfile
 def main():
     args = get_args()
 
-    unpacked_unitypackage = unpack_unitypackage(args.unitypackage)
-    megacool_aar = find_megacool_aar(unpacked_unitypackage)
+    is_unitypackage = not zipfile.is_zipfile(args.input)
+
+    if is_unitypackage:
+        unpacked_unitypackage = unpack_unitypackage(args.input)
+        megacool_aar = find_megacool_aar(unpacked_unitypackage)
+    else:
+        megacool_aar = args.input
+
     unpacked_aar = unpack_aar(megacool_aar)
 
     modify_manifest(unpacked_aar, args.application_id)
 
     repack_aar(unpacked_aar, megacool_aar)
-    repack_unitypackage(unpacked_unitypackage, args.input)
 
-    shutil.rmtree(unpacked_unitypackage)
+    if is_unitypackage:
+        repack_unitypackage(unpacked_unitypackage, args.input)
+        shutil.rmtree(unpacked_unitypackage)
+
     shutil.rmtree(unpacked_aar)
 
     print('Success! \U0001F596')
@@ -97,8 +107,8 @@ def repack_unitypackage(unpacked_unitypackage, destination):
 
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('unitypackage',
-        help='Path to the unity package to modify')
+    parser.add_argument('input',
+        help='Path to the unity package or Android .aar to modify')
     parser.add_argument('application_id',
         help='The application id to set in the new package')
     return parser.parse_args()
