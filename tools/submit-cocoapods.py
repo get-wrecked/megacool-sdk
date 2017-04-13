@@ -12,6 +12,7 @@ import tarfile
 import tempfile
 import textwrap
 import time
+import zipfile
 from contextlib import closing
 
 import boto3
@@ -48,10 +49,10 @@ def build_release_archive(version):
         Head over to [the documentation](https://docs.megacool.co/quickstart) to get started!
     ''').encode('utf-8')
     archive = tempfile.NamedTemporaryFile(delete=False)
-    with tarfile.open(fileobj=archive, mode='w:gz') as fh:
+    with zipfile.ZipFile(archive, 'w') as fh:
         add_file_to_archive(fh, 'megacool/LICENSE.md', license)
         add_file_to_archive(fh, 'megacool/README.md', readme)
-        fh.add('CHANGELOG.md', arcname='megacool/CHANGELOG.md')
+        fh.write('CHANGELOG.md', arcname='megacool/CHANGELOG.md')
         # TODO: Get this from a git note in the ios sdk repo
         framework_url = 'https://megacool-files.s3-accelerate.amazonaws.com/v{version}/Megacool.framework.tar.gz'.format(
             version=version)
@@ -59,7 +60,11 @@ def build_release_archive(version):
         framework_unpacked = tempfile.mkdtemp()
         with tarfile.open(framework, mode='r:gz') as framework:
             framework.extractall(path=framework_unpacked)
-        fh.add(os.path.join(framework_unpacked, 'Megacool.framework'), arcname='megacool/Megacool.framework')
+        for dirname, directories, filenames in os.walk(framework_unpacked):
+            for filename in filenames:
+                filepath = os.path.join(framework_unpacked, dirname, filename)
+                arcname = os.path.join('megacool', os.path.relpath(filepath, framework_unpacked))
+                fh.write(filepath, arcname=arcname)
 
     return archive.name
 
@@ -67,10 +72,10 @@ def build_release_archive(version):
 def upload_release(version, path):
     s3 = boto3.resource('s3')
     s3_args = {
-        'ContentType': 'application/gzip',
+        'ContentType': 'application/zip',
         'ACL': 'public-read',
     }
-    key = 'megacool-sdk-ios-v{version}.tar.gz'.format(version=version)
+    key = 'megacool-sdk-ios-v{version}.zip'.format(version=version)
     bucket = 'megacool-files'
     with open(path, 'rb') as fh:
         s3.Bucket(bucket).upload_fileobj(fh, key, ExtraArgs=s3_args)
@@ -80,13 +85,8 @@ def upload_release(version, path):
 
 
 def add_file_to_archive(archive, path, contents):
-    memory_file = StringIO.StringIO()
-    memory_file.write(contents)
-    memory_file.seek(0)
-    info = tarfile.TarInfo(name=path)
-    info.size = len(memory_file.buf)
-    info.mtime = int(time.time())
-    archive.addfile(info, memory_file)
+    info = zipfile.ZipInfo(path, time.gmtime()[:6])
+    archive.writestr(info, contents)
 
 
 def download_file(url):

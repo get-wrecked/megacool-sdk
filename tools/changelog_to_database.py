@@ -46,7 +46,7 @@ class Release(object):
         if platform == 'Unity':
             filename = 'Megacool.unitypackage'
         elif platform == 'iOS':
-            return '%s/megacool-sdk-ios-v%s.tar.gz' % (base_url, self.version)
+            return '%s/megacool-sdk-ios-v%s.zip' % (base_url, self.version)
         elif platform == 'Android':
             filename = 'Megacool.aar'
         else:
