@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.2.4 - 2017-04-14
+==================
+
+## Fixed
+- The fix from 2.2.2 to ensure frame width is divisible by 4 didn't catch all cases, this has now
+  been fixed.
+- Blurry last frame overlay on some devices.
+
+
 2.2.3 - 2017-03-29
 ==================
 
