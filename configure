@@ -16,7 +16,7 @@ sanity_check () {
 }
 
 install_python_deps () {
-    test -d venv || virtualenv venv
+    test -d venv || virtualenv venv -p $(which python3)
     install_python_dep awscli
     install_python_dep psycopg2
     install_python_dep jinja2
