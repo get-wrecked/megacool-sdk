@@ -41,27 +41,13 @@ def build_release_archive(version):
     # Note that while shutil.make_archive seems like it should be able to assist here, it
     # does not handle symlinks correctly, and does not create reproducible tarballs.
     print('Building template release')
-    license = textwrap.dedent('''\
-        All text and design is copyright © 2017 Megacool Inc.
-        All rights reserved. Terms of use as defined at https://megacool.co/terms applies.
-    ''').encode('utf-8')
-    readme = textwrap.dedent('''\
-        Megacool SDK
-        ============
-
-        Megacool is a viral growth solution that helps you spread
-        user-generated GIFs and link them back to your app.
-
-        Head over to [the documentation](https://docs.megacool.co/quickstart) to get started!
-    ''').encode('utf-8')
 
     # Add meta files
     archive_dir = tempfile.mkdtemp()
-    with open(os.path.join(archive_dir, 'LICENSE.md'), 'wb') as fh:
-        fh.write(license)
-    with open(os.path.join(archive_dir, 'README.md'), 'wb') as fh:
-        fh.write(readme)
     shutil.copy2('CHANGELOG.md', os.path.join(archive_dir, 'CHANGELOG.md'))
+    for dist_file in os.listdir('dist-files'):
+        file_path = os.path.join('dist-files', dist_file)
+        shutil.copy2(file_path, os.path.join(archive_dir, dist_file))
 
     # Download and extract Megacool.framework
     # TODO: Get this from a git note in the ios sdk repo
