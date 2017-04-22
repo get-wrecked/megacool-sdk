@@ -17,16 +17,7 @@ sanity_check () {
 
 install_python_deps () {
     test -d venv || virtualenv venv -p $(which python3)
-    install_python_dep awscli
-    install_python_dep psycopg2
-    install_python_dep jinja2
-    install_python_dep requests
-    install_python_dep boto3
-}
-
-install_python_dep () {
-    local dep=$1
-    ./venv/bin/pip freeze | grep -iq "$dep" || ./venv/bin/pip install "$dep"
+    ./venv/bin/pip install -r requirements.txt
 }
 
 main
