@@ -48,7 +48,8 @@ class Release(object):
         elif platform == 'iOS':
             return '%s/megacool-sdk-ios-v%s.zip' % (base_url, self.version)
         elif platform == 'Android':
-            filename = 'Megacool.aar'
+            repo_url = 'https://megacool-maven-repo.s3-accelerate.amazonaws.com/releases'
+            return '{0}/co/megacool/megacool/{1}/megacool-{1}.aar'.format(repo_url, self.version)
         else:
             raise ValueError('Invalid platform: %s' % platform)
 
