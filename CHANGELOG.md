@@ -3,6 +3,25 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.3.0 - 2017-04-26
+==================
+
+First Android release! Only supports native Android for now, Unity will hopefully come Real Soon
+Now(tm). Mostly on feature parity with iOS, except the following:
+- Custom share buttons
+- Recordings have to be stopped before they can be previewed or shared
+- Cropping isn't entirely operational yet
+
+While we hope you don't encounter any stacktraces or crashes that originate from us, if you do
+please send them our way, we can only fix what we're aware of.
+
+Head over to https://docs.megacool.co/quickstart/android to get started!
+
+## Removed
+- **Unity**: Earlier releases included an unused `Google.*Resolver.dll` files, these have been removed to
+  avoid conflict with other projects that actually use them.
+
+
 2.2.4 - 2017-04-14
 ==================
 
