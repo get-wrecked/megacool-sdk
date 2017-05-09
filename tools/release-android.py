@@ -89,31 +89,67 @@ def main():
     print('Uploading new manifest')
     upload_maven_manifest(new_manifest)
 
+    print('Tagging source commit')
+    tag_source_commit(release_spec['commit'], args.version)
+    push_tags()
+
     # cleanup
     os.remove(downloaded)
     shutil.rmtree(unpacked_artifact)
     print('Success! \U0001F596')
 
 
+def tag_source_commit(commitish, version):
+    repo_path = get_cached_repo_path()
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'tag',
+        '--message', 'Release v%s' % str(version),
+        'v%s' % str(version),
+        commitish,
+    ])
+
+
+def push_tags():
+    repo_path = get_cached_repo_path()
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'push', '--tags',
+    ])
+
+
 def get_release_spec(version):
     repo_path = checkout_repository(version.release_branch)
+
+    commitish = get_commitish(repo_path)
 
     cmd = [
         'git',
         '-C', repo_path,
         'notes',
         '--ref', 'artifacts',
-        'show', 'HEAD',
+        'show', commitish,
     ]
     artifact_notes = subprocess.check_output(cmd).decode('utf-8').strip()
     artifact_re = re.compile(r'^(?P<artifact>\w+)/(?P<detail>\w+):\s*(?P<content>.+)$')
     artifacts = defaultdict(dict)
+    artifacts['commit'] = commitish
     for line in artifact_notes.split('\n'):
         line = line.strip()
         match = artifact_re.match(line)
         artifact, detail, content = match.groups()
         artifacts[artifact][detail] = content
     return artifacts
+
+
+def get_commitish(repo_path):
+    return subprocess.check_output([
+        'git',
+        '-C', repo_path,
+        'rev-parse', 'HEAD',
+    ]).decode('utf-8').strip()
 
 
 def download_artifact(details):
