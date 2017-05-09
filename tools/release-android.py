@@ -13,6 +13,7 @@ import tarfile
 import tempfile
 import urllib.parse
 import xml.etree.ElementTree as ET
+from functools import total_ordering
 from collections import defaultdict, namedtuple
 
 import boto3
@@ -27,6 +28,7 @@ MANIFEST_KEY = 'releases/co/megacool/megacool/maven-metadata.xml'
 s3 = boto3.resource('s3')
 
 
+@total_ordering
 class Version(namedtuple('Version', 'major minor patch label')):
 
     def __str__(self):
@@ -38,6 +40,7 @@ class Version(namedtuple('Version', 'major minor patch label')):
     def release_branch(self):
         return '%d.%d.x' % (self.major, self.minor)
 
+
     @classmethod
     def from_string(cls, version_str):
         version_match = VERSION_RE.match(version_str)
@@ -48,10 +51,25 @@ class Version(namedtuple('Version', 'major minor patch label')):
         groups.append(label)
         return cls(*groups)
 
-    # TODO: Versions don't currently sort correctly if there are labels
-    # involved, as anything with a label will sort as greater than a version
-    # without. If we ever want to release a RC with this script this must be
-    # fixed so that the full release will replace it.
+
+    def __lt__(self, other):
+        # Intended ordering:
+        # 1.0.0
+        # 2.0.0-rc1
+        # 2.0.0-rc2
+        # 2.0.0
+        self_versions = self[0:3]
+        other_versions = other[0:3]
+        if self_versions == other_versions:
+            # All versions with labels are lesser than those without
+            if self.label and other.label:
+                return self.label < other.label
+            elif self.label and not other.label:
+                return True
+            else:
+                return False
+        else:
+            return self_versions < other_versions
 
 
 def main():
