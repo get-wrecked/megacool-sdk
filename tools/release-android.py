@@ -242,18 +242,22 @@ def _checkout_repository(url, directory, branch):
         clone_cmd = [
             'git',
             'clone', url,
+            '--config', 'remote.origin.fetch=+refs/notes/*:refs/notes/*',
             directory,
         ]
         subprocess.check_call(clone_cmd)
-    else:
-        subprocess.check_call([
-            'git',
-            '-C', directory,
-            'fetch', 'origin',
-            'refs/notes/*:refs/notes/*',
-            # '--all',
-            '--quiet',
-        ])
+
+    # TODO: When the bug that prevents the --config refspec from being used
+    # on the initial clone[1] is fixed, the fetch can be put in an `else`
+    # block to prevent an extra network hop.
+    # [1]: http://public-inbox.org/git/robbat2-20170225T185056-448272755Z@orbis-terrarum.net/
+
+    subprocess.check_call([
+        'git',
+        '-C', directory,
+        'fetch',
+        '--quiet',
+    ])
 
     checkout_cmd = [
         'git',
