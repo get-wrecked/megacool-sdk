@@ -3,6 +3,30 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.0-rc1 - 2017-05-10
+======================
+
+First release that supports Android for Unity! Not entirely at feature parity with iOS yet, we'll
+be gradually fixing  the discrepancies in upcoming releases. The following doesn't work on Android
+yet:
+
+- No share fallback images
+- No last frame overlays
+- No cropping
+- No custom share buttons
+- Recordings have to be stopped before they can be previewed or shared
+- The `RECEIVED_SHARE_OPENED` events are never fired
+- Not all classes are namespaced yet and might create conflicts
+- Previews do not support IncludeLastFrameOverlay
+- Some actions are pretty slow (rendering preview, share)
+
+Any and all feedback you have from trying it out is greatly appreciated.
+
+
+## Fixed
+- Android: Referral codes containing `-` or `_` were parsed only partially.
+
+
 2.3.0 - 2017-04-26
 ==================
 
