@@ -3,6 +3,19 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.0-rc2 - 2017-05-12
+======================
+
+## Changed
+- Unity: The `co.Megacool` namespace has been removed and all classes have been renamed with a `Megacool`
+  prefix for consistency. If you had a `GifPreview` in your scene this will loose the script
+  reference, attach the new `MegacoolGifPreview` instead.
+
+## Fixed
+- Unity: Crash on launch with `Unable to get provider android.support.v4.content.FileProvider`.
+- Android and Unity Android: `RECEIVED_SHARE_OPENED` events not being fired.
+
+
 2.4.0-rc1 - 2017-05-10
 ======================
 
