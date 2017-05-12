@@ -72,6 +72,12 @@ class Version(namedtuple('Version', 'major minor patch label')):
             return self_versions < other_versions
 
 
+    def __gt__(self, other):
+        # We need to override this since namedtuple has some defaults that'll
+        # mess up @total_ordering
+        return self != other and not self < other
+
+
 def main():
     args = get_args()
     print('Fetching release spec')
