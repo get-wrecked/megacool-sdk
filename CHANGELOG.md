@@ -3,6 +3,22 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.0-rc3 - 2017-05-23
+======================
+
+## Changed
+- Android: Share, ShareConfig and ShareState have been moved from co.megacool.megacool.share to
+  co.megacool.megacool.
+- Android: Recording and OverflowStrategy have been moved from co.megacool.megacool.recording to
+  co.megacool.megacool.
+- Android: Minimum version has been bumped to 4.3 (SDK level 18), to prevent a crash on 4.2.2
+  devices.
+- Unity: GIF resolution was lowered on iPads for faster processing.
+
+## Fixed
+- Unity: Editor crashed if the Megacool configuration inspector was open during build.
+
+
 2.4.0-rc2 - 2017-05-12
 ======================
 
