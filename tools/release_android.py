@@ -97,7 +97,11 @@ def main():
 
     print('Tagging source commit')
     tag_source_commit(release_spec['commit'], args.version)
-    push_tags()
+    git_push(tags=True)
+
+    print('Truncating UNRELEASED')
+    truncate_unreleased(args.version)
+    git_push()
 
     # cleanup
     os.remove(downloaded)
@@ -117,13 +121,16 @@ def tag_source_commit(commitish, version):
     ])
 
 
-def push_tags():
+def git_push(tags=False):
     repo_path = get_cached_repo_path()
-    subprocess.check_call([
+    cmd = [
         'git',
         '-C', repo_path,
-        'push', '--tags',
-    ])
+        'push',
+    ]
+    if tags:
+        cmd.append('--tags')
+    subprocess.check_call(cmd)
 
 
 def get_release_spec(version):
@@ -148,6 +155,28 @@ def get_release_spec(version):
         artifact, detail, content = match.groups()
         artifacts[artifact][detail] = content
     return artifacts
+
+
+def truncate_unreleased(version):
+    repo_path = get_cached_repo_path()
+    unreleased_path = os.path.join(repo_path, 'UNRELEASED.md')
+
+    if os.stat(unreleased_path).st_size == 0:
+        # No changes, ignore
+        return
+
+    with open(unreleased_path, 'w') as fh:
+        fh.truncate()
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'add', 'UNRELEASED.md',
+    ])
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'commit', '-m', 'Truncate UNRELEASED\n\nThese changes were released in %s' % str(version),
+    ])
 
 
 def get_commitish(repo_path):
