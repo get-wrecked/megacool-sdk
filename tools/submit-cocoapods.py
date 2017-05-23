@@ -282,6 +282,7 @@ def get_release_timestamp(version):
                 day = int(match.group(3))
                 # Since we release as zip we'll not use UTC since zip uses local times.
                 return datetime.datetime(year, month, day).timestamp()
+    raise ValueError('Version %s not found in changelog' % str(version))
 
 
 def download_file(spec):
