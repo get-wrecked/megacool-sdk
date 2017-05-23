@@ -87,6 +87,9 @@ def main():
     tag_source_commit(release_spec['commit'], args.version)
     git_push(tags=True)
 
+    truncate_unreleased(args.version)
+    git_push()
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -375,6 +378,28 @@ def submit_pod(podspec):
         subprocess.check_call(['pod', 'trunk', 'push', 'Megacool.podspec'], cwd=build_dir)
     finally:
         shutil.rmtree(build_dir)
+
+
+def truncate_unreleased(version):
+    repo_path = get_cached_repo_path()
+    unreleased_path = os.path.join(repo_path, 'UNRELEASED.md')
+
+    if os.stat(unreleased_path).st_size == 0:
+        # No changes, ignore
+        return
+
+    with open(unreleased_path, 'w') as fh:
+        fh.truncate()
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'add', 'UNRELEASED.md',
+    ])
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'commit', '-m', 'Truncate UNRELEASED\n\nThese changes were released in %s' % str(version),
+    ])
 
 
 def tag_source_commit(commitish, version):
