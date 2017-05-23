@@ -3,6 +3,7 @@
 
 import argparse
 import datetime
+import hashlib
 import os
 import re
 import shutil
@@ -11,11 +12,66 @@ import tarfile
 import tempfile
 import textwrap
 import zipfile
+from collections import defaultdict, namedtuple
 from contextlib import closing
+from functools import total_ordering
 
 import boto3
 import jinja2
 import requests
+
+IOS_REPO = 'ssh://git@github.com/megacool/megacool-ios-sdk'
+VERSION_RE = re.compile(r'^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([a-z0-9-]+))?$')
+
+
+@total_ordering
+class Version(namedtuple('Version', 'major minor patch label')):
+
+    def __str__(self):
+        label = '-%s' % self.label if self.label else ''
+        return '%d.%d.%d%s' % (self[:3] + (label,))
+
+
+    @property
+    def release_branch(self):
+        return '%d.%d.x' % (self.major, self.minor)
+
+
+    @classmethod
+    def from_string(cls, version_str):
+        version_match = VERSION_RE.match(version_str)
+        if not version_match:
+            raise ValueError('Invalid version, must be formatted like 2.0.1 or 3.2.1-rc1')
+        groups = [int(part) for part in version_match.groups()[:3]]
+        label = version_match.group(4) or ''
+        groups.append(label)
+        return cls(*groups)
+
+
+    def __lt__(self, other):
+        # Intended ordering:
+        # 1.0.0
+        # 2.0.0-rc1
+        # 2.0.0-rc2
+        # 2.0.0
+        self_versions = self[0:3]
+        other_versions = other[0:3]
+        if self_versions == other_versions:
+            # All versions with labels are lesser than those without
+            if self.label and other.label:
+                return self.label < other.label
+            elif self.label and not other.label:
+                return True
+            else:
+                return False
+        else:
+            return self_versions < other_versions
+
+
+    def __gt__(self, other):
+        # We need to override this since namedtuple has some defaults that'll
+        # mess up @total_ordering
+        return self != other and not self < other
 
 
 def main():
@@ -30,7 +86,9 @@ def main():
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('version')
-    return parser.parse_args()
+    args = parser.parse_args()
+    args.version = Version.from_string(args.version)
+    return args
 
 
 def build_release_archive(version):
@@ -50,10 +108,8 @@ def build_release_archive(version):
         shutil.copy2(file_path, os.path.join(archive_dir, dist_file))
 
     # Download and extract Megacool.framework
-    # TODO: Get this from a git note in the ios sdk repo
-    framework_url = 'https://megacool-files.s3-accelerate.amazonaws.com/v{version}/Megacool.framework.tar.gz'.format(
-        version=version)
-    framework = download_file(framework_url)
+    release_spec = get_release_spec(version)
+    framework = download_file(release_spec['iOS'])
     with tarfile.open(framework, mode='r:gz') as framework:
         framework.extractall(path=archive_dir)
     os.remove(framework.name)
@@ -70,6 +126,89 @@ def build_release_archive(version):
     shutil.rmtree(archive_dir)
 
     return release_archive
+
+
+def get_release_spec(version):
+    repo_path = checkout_repository(version.release_branch)
+
+    commitish = get_commitish(repo_path)
+
+    cmd = [
+        'git',
+        '-C', repo_path,
+        'notes',
+        '--ref', 'artifacts',
+        'show', commitish,
+    ]
+    artifact_notes = subprocess.check_output(cmd).decode('utf-8').strip()
+    artifact_re = re.compile(r'^(?P<artifact>\w+)/(?P<detail>\w+):\s*(?P<content>.+)$')
+    artifacts = defaultdict(dict)
+    artifacts['commit'] = commitish
+    for line in artifact_notes.split('\n'):
+        line = line.strip()
+        match = artifact_re.match(line)
+        artifact, detail, content = match.groups()
+        artifacts[artifact][detail] = content
+    return artifacts
+
+
+def get_commitish(repo_path):
+    return subprocess.check_output([
+        'git',
+        '-C', repo_path,
+        'rev-parse', 'HEAD',
+    ]).decode('utf-8').strip()
+
+
+def checkout_repository(branch):
+    cached_repo_path = get_cached_repo_path()
+    _checkout_repository(IOS_REPO, cached_repo_path, branch)
+    return cached_repo_path
+
+
+def get_cached_repo_path():
+    return os.path.join(os.path.expanduser('~'), '.cache', 'megacool-sdk', 'ios')
+
+
+def _checkout_repository(url, directory, branch):
+    '''Idempotentially ensures the repo at the given url is checked out in the given directory at
+    the given branch.
+    '''
+    if not os.path.exists(directory):
+        clone_cmd = [
+            'git',
+            'clone', url,
+            '--config', 'remote.origin.fetch=+refs/notes/*:refs/notes/*',
+            directory,
+        ]
+        subprocess.check_call(clone_cmd)
+
+    # TODO: When the bug that prevents the --config refspec from being used
+    # on the initial clone[1] is fixed, the fetch can be put in an `else`
+    # block to prevent an extra network hop.
+    # [1]: http://public-inbox.org/git/robbat2-20170225T185056-448272755Z@orbis-terrarum.net/
+
+    subprocess.check_call([
+        'git',
+        '-C', directory,
+        'fetch',
+        '--quiet',
+    ])
+
+    checkout_cmd = [
+        'git',
+        '-C', directory,
+        'checkout', branch,
+        '--quiet',
+    ]
+    subprocess.check_call(checkout_cmd)
+
+    subprocess.check_call([
+        'git',
+        '-C', directory,
+        'rebase', 'origin/%s' % branch,
+        '--quiet',
+    ])
 
 
 def create_zip_archive(source_directory, release_timestamp):
@@ -133,7 +272,7 @@ def upload_release(version, path):
 
 
 def get_release_timestamp(version):
-    version_re = re.compile(r'%s - (\d{4})-(\d{2})-(\d{2})$' % version)
+    version_re = re.compile(r'%s - (\d{4})-(\d{2})-(\d{2})$' % str(version))
     with open('CHANGELOG.md') as fh:
         for line in fh:
             match = version_re.match(line.strip())
@@ -145,13 +284,17 @@ def get_release_timestamp(version):
                 return datetime.datetime(year, month, day).timestamp()
 
 
-def download_file(url):
+def download_file(spec):
+    hash_state = hashlib.sha256()
     destination = tempfile.NamedTemporaryFile(delete=False)
-    with closing(requests.get(url, stream=True)) as response:
+    with closing(requests.get(spec['url'], stream=True)) as response:
         response.raise_for_status()
         for chunk in iter(response.iter_content(64*2**10, b'')):
             destination.write(chunk)
+            hash_state.update(chunk)
     destination.close()
+    digest = hash_state.hexdigest()
+    assert digest == spec['sha256']
     return destination.name
 
 
@@ -209,7 +352,7 @@ def build_podspec(version, release_url):
 
         end
     ''')).render(
-        version=version,
+        version=str(version),
         release_url=release_url,
     ).encode('utf-8')
 
