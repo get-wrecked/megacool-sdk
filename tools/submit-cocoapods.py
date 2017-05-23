@@ -76,11 +76,16 @@ class Version(namedtuple('Version', 'major minor patch label')):
 
 def main():
     args = get_args()
-    ios_release = build_release_archive(args.version)
+    release_spec = get_release_spec(args.version)
+    ios_release = build_release_archive(args.version, release_spec)
     release_url = upload_release(args.version, ios_release)
+
     os.remove(ios_release)
     podspec = build_podspec(args.version, release_url)
     submit_pod(podspec)
+
+    tag_source_commit(release_spec['commit'], args.version)
+    git_push(tags=True)
 
 
 def get_args():
@@ -91,7 +96,7 @@ def get_args():
     return args
 
 
-def build_release_archive(version):
+def build_release_archive(version, release_spec):
     # First writes the intended archive contents to a directory, then packages that
     # directory as zip. Could easily be extended or modified to different formats if desired
     # (like tarballs), but keeping only zip for now since it works cross-platform and is
@@ -108,7 +113,6 @@ def build_release_archive(version):
         shutil.copy2(file_path, os.path.join(archive_dir, dist_file))
 
     # Download and extract Megacool.framework
-    release_spec = get_release_spec(version)
     framework = download_file(release_spec['iOS'])
     with tarfile.open(framework, mode='r:gz') as framework:
         framework.extractall(path=archive_dir)
@@ -371,6 +375,30 @@ def submit_pod(podspec):
         subprocess.check_call(['pod', 'trunk', 'push', 'Megacool.podspec'], cwd=build_dir)
     finally:
         shutil.rmtree(build_dir)
+
+
+def tag_source_commit(commitish, version):
+    repo_path = get_cached_repo_path()
+    subprocess.check_call([
+        'git',
+        '-C', repo_path,
+        'tag',
+        '--message', 'Release v%s' % str(version),
+        'v%s' % str(version),
+        commitish,
+    ])
+
+
+def git_push(tags=False):
+    repo_path = get_cached_repo_path()
+    cmd = [
+        'git',
+        '-C', repo_path,
+        'push',
+    ]
+    if tags:
+        cmd.append('--tags')
+    subprocess.check_call(cmd)
 
 
 if __name__ == '__main__':
