@@ -6,6 +6,23 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 2.4.0-rc3 - 2017-05-23
 ======================
 
+2.4.0 getting closer! A couple of issues found so far in the RC that we're aware of:
+
+Android:
+    - Some people have reported that shares and previews only work the first time in a session, and
+    that subsequent attempts fail to yield any results. This will be resolved before we release
+    2.4.0.
+    - Share analytics is not finished, we currently don't track shares completed, so the numbers on
+    the dashboard will not be entirely accurate. Re-engaged sessions and installs work though.
+
+Unity Android:
+    - Deep links in to Unity apps doesn't fully open the app, leading to a blank white screen after
+    clicking links. This will be resolved before we release 2.4.0.
+    - GIF previews currently doesn't work with Unity 5.6. This is a known Unity issue, we are
+    currently contemplating whether to wait for Unity to fix it or work around it, let us know if
+    this is a deal breaker for you and we'll speed up a fix.
+
+
 ## Changed
 - Android: Share, ShareConfig and ShareState have been moved from co.megacool.megacool.share to
   co.megacool.megacool.
