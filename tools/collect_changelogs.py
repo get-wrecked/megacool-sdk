@@ -1,6 +1,7 @@
 #!./venv/bin/python
 
 import argparse
+import datetime
 import os
 import re
 import subprocess
@@ -29,7 +30,7 @@ class Version(namedtuple('Version', 'major minor patch label')):
 def main():
     args = parse_args()
     checkout_repositories(args.version.release_branch)
-    collect_changelogs()
+    collect_changelogs(args.version)
 
 
 def checkout_repositories(branch):
@@ -47,7 +48,7 @@ def checkout_repositories(branch):
 
 
 
-def collect_changelogs():
+def collect_changelogs(version):
     with open('CHANGELOG.md') as fh:
         changelog_lines = fh.readlines()
     changelog_header = ''.join(changelog_lines[:5])
@@ -61,8 +62,12 @@ def collect_changelogs():
             new_changelog.append('>>>> %s changes: <<<<\n%s' % (name, changelog))
             print('%s changelog: \n%s' % (name, changelog))
 
+    datestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d')
+    version_header = '%s - %s' % (str(version), datestamp)
+
     with open('CHANGELOG.md', 'w') as fh:
         fh.write(changelog_header)
+        fh.write('%s\n%s\n\n' % (version_header, '='*len(version_header)))
         fh.write('\n'.join(new_changelog))
         fh.write('\n\n')
         fh.write(existing_changelog)
