@@ -3,6 +3,61 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.0 - 2017-06-07
+==================
+
+It's here! The latest and greatest, out of RC and ready for the world, the first finished release
+that supports compiling to Android from Unity!
+
+Android is still not at full feature parity with iOS, the following is still unimplemented:
+- Cropping
+- Last frame overlays (last frame delay works however)
+- Custom share buttons
+- Share analytics, we currently don't track shares completed, so the numbers on the dashboard will
+  not be entirely accurate. Re-engaged sessions and installs work though.
+- GIF previews currently doesn't work with Unity 5.6. This is a known Unity issue, we are
+currently contemplating whether to wait for Unity to fix it or work around it, let us know if
+this is a deal breaker for you and we'll speed up a fix.
+- Share fallback images
+
+These features will appear gradually as we get around to implementing them, if you've got a crush on
+any of them, let us know and we can prioritize that.
+
+## Changed
+- Unity: Moved Android manifest. To get deep links working properly on Unity we need to write to
+  the main application manifest at `Assets/Plugins/Android/AndroidManifest.xml`, where we in the RC
+  wrote to our package-specific manifest at `Assets/Plugins/Android/*Megacool*/AndroidManifest.xml`.
+  If you have the old file from the RC, delete that and click "Write Android manifest" again. If you
+  already have a custom main manifest it'll get overwritten when you write the Megacool manifest --
+  you'll have to merge these manually after the Megacool changes are written. Let us know if you
+  bump into any issues with this and we'd be happy to assist, and similarly let us know if there's
+  anything we can do to make this easier for you.
+- Unity: The unit for last frame delay has been changed from seconds to milliseconds, you probably
+  have to update your MegacoolConfiguration accordingly.
+- Android: Recording.Config has been replaced by RecordingConfig, which should
+  make it much easier to customize recordings.
+- Android: Last frame delay was interpreted as seconds, while being documented as milliseconds. It
+  is now interpreted as the latter.
+- Android: Recordings are now automatically paused when the app is backgrounded, but you have to
+  start it again manually when the session is resumed.
+- iOS: Last frame delay is now given in ms. The defaults are still the same, but if you use a custom
+  last frame delay, multiply that by 1000 to keep the same delay.
+
+## Fixed
+- Unity couldn't build to Android with Gradle on Unity 5.5 and lower.
+- Android: Broken timelapse recording. Timelapse now works with startRecording, but is still broken
+  with captureFrame.
+- Android: Repeated shares in the same session not creating GIFs.
+- iOS: Occasional crash when rendering previews, introduced in 2.2.0.
+
+## Added
+- Unity: Max frames, last frame delay and overflow strategy can now be set for each recording in addition
+  to the global defaults. Previously only some of the recording configuration could be set per
+  recording.
+- Android: `Event.getUrl()` helper to get the URL for link clicked events.
+- Android: `Event.getReferralCode()` helper to get the referral code for events.
+
+
 2.4.0-rc3 - 2017-05-23
 ======================
 
