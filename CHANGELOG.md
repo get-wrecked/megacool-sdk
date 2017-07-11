@@ -7,6 +7,7 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 ==================
 
 ## Fixed
+- Unity: Building to iOS without selecting universal linking didn't work.
 - iOS: Last frame delay was wrong for GIFs created with color table set by analyzing the first
   frame.
 - iOS: If last frame delay was set to 0 when using the fixed color table the actual last frame
