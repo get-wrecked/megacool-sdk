@@ -3,6 +3,20 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.1 - 2017-07-11
+==================
+
+## Fixed
+- iOS: Last frame delay was wrong for GIFs created with color table set by analyzing the first
+  frame.
+- iOS: If last frame delay was set to 0 when using the fixed color table the actual last frame
+  duration would be set to `playbackFrameRate`, not `1/playbackFrameRate` as was done when using
+  analyze first frame. This behavior is now also documented.
+- URLs from other SDKs are no longer submitted to the API in full form, these are now redacted.
+  Link clicked events in the event handler will still receive them though, you should sanity check
+  these before using them for navigation.
+
+
 2.4.0 - 2017-06-07
 ==================
 
