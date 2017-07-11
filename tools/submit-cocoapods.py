@@ -328,7 +328,7 @@ def build_podspec(version, release_url):
                 "Nicolaj Broby Petersen" => "nicolaj@megacool.co",
                 "Tarjei Husøy" => "tarjei@megacool.co"
             }
-            s.social_media_url = "https://twitter.com/bemegacool"
+            s.social_media_url = "https://twitter.com/megacool_co"
 
             s.source = {
                 :http => "{{ release_url }}"
