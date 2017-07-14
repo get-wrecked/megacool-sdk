@@ -3,6 +3,18 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.2 - 2017-07-14
+==================
+
+## Fixed
+- iOS: Previews now run with a black background, to hide the actual background in case of transparency
+  in the frames.
+- Android: Race condition between `captureFrame()` and `pause()` could cause one extra frame to be included
+  in the GIF after a recording had been stopped or paused.
+- Unity: The warning for invisible previews have been removed for Unity versions 5.6.2 and above, as it has
+  been fixed in newer versions.
+
+
 2.4.1 - 2017-07-11
 ==================
 
