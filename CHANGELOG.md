@@ -3,6 +3,30 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.3 - 2017-08-09
+==================
+
+## Fixed
+- Unity: Facebook logins broken because of a `openUrl` conflict.
+- Unity: Severe performance hit on certain devices due to using `Graphics.Blit`.
+- Unity: `SubmitDebugData` and `Megacool.Debug = true` now also works for Android.
+- Android: All SDK entrypoints have been guarded against RuntimeExceptions to prevent crashing apps
+  on errors, barring any crashes in native code. Stacktraces from RuntimeExceptions are also
+  automatically reported to us so that they'll be fixed ASAP.
+- Android: NullPointerException if trying to authenticate with the API with incorrect local time on
+  device.
+
+## Removed
+- Unity: `MegacoolRecordingConfig.Crop` and `MegacoolFrameCaptureConfig.Crop`, since they don't work
+  yet. Will come back soon.
+
+## Added
+- Android: `submitDebugData` similar to on iOS. If the SDK is not giving you the results you
+  expected, call `Megacool.enableDebugging()` at the beginning of the session, and call
+  `Megacool.submitDebugData("expected X but got Y")` after observing the strange behavior, and we'll
+  take a look.
+
+
 2.4.2 - 2017-07-14
 ==================
 
