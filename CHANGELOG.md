@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.4 - 2017-08-10
+==================
+
+## Fixed
+- Android: Crash when calling `startRecording` due to a threading issue introduced in 2.4.3.
+
+
 2.4.3 - 2017-08-09
 ==================
 
