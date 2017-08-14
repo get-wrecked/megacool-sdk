@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.4.5 - 2017-08-14
+==================
+
+## Fixed
+- Unity: Compile error when building to iOS.
+
+
 2.4.4 - 2017-08-10
 ==================
 
