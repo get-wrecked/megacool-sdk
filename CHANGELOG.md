@@ -7,7 +7,7 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 ==================
 
 ## Changed
-- Unity: The `MegacoolGifPreview` has been remade aa pure Unity prefab, enabling it to be freely
+- Unity: The `MegacoolGifPreview` has been remade as a pure Unity prefab, enabling it to be freely
   positioned and animated in Unity. Just replace the old one and be sure to connect it to your
   script in the inspector (drag and drop).
 - Unity: Scheme has been split to accomodate different schemes between iOS and Android. If you had
