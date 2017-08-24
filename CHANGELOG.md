@@ -3,6 +3,40 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.5.0 - 2017-08-23
+==================
+
+## Changed
+- Unity: The `MegacoolGifPreview` has been remade aa pure Unity prefab, enabling it to be freely
+  positioned and animated in Unity. Just replace the old one and be sure to connect it to your
+  script in the inspector (drag and drop).
+- Unity: Scheme has been split to accomodate different schemes between iOS and Android. If you had
+  an existing scheme you have to enter it again for the relevant platform(s).
+- Android: `enableDebugging` has been renamed to `setDebug` for parity with iOS and Unity.
+
+## Fixed
+- iOS: Last frame delay in previews was not respected unless a last frame overlay was set.
+- iOS: GIFs created with a fixed color table did not loop on some channels.
+- Android: Setting last frame delay to 0 means the same as on iOS - the same delay as the other
+  frames.
+- Android: GIFs did not loop on some channels.
+
+## Added
+- Unity: A predefined canvas named `MegacoolPreviewCanvas` that contains the `MegacoolGifPreview`.
+  This can be added directly to the scene so you don't have to add a UI canvas first.
+- iOS: `getPreview` has been added as a more performant alternative to `renderPreviewOfGif`. This
+  returns a `MCLPreview` instead of a `UIImageView`, but it's a subclass of `UIView` so should be
+  easy to drop in as a replacement for `renderPreviewOfGif`.
+
+## Removed
+- iOS: The deprecated methods `handleDeepLink` and `openShareModalIn:` that was supposed to be
+  removed in 2.3.0 have finally been removed.
+
+## Deprecated
+- iOS: `renderPreviewOfGif` and `renderPreviewOfGifWithConfig:` have been deprecated in favor of
+  `getPreview`, which is easier to configure and performs better.
+
+
 2.4.5 - 2017-08-14
 ==================
 
