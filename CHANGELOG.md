@@ -3,6 +3,21 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.5.1 - 2017-09-12
+==================
+
+## Fixed
+- iOS: Removed some debug logging when sharing.
+- Android: String resources are now marked as untranslatable to avoid lint errors.
+- Android: Deep links from Unity could cause an exception to be printed and the link to be ignored.
+- Android: `share()` now continues sharing just text and link if the GIF for some reason fails.
+- Unity: The Megacool.Instance.SharingText getter is now actually implemented and doesn't crash.
+- Unity: String resources are now marked as untranslatable to avoid lint errors.
+
+## Added
+- iOS: Missing getters for `Megacool.maxFrames` and `Megacool.frameRate`.
+
+
 2.5.0 - 2017-08-23
 ==================
 
