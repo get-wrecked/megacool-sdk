@@ -3,6 +3,64 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.0 - 2017-11-03
+==================
+
+Very exciting release this time, introducing both highlight recording and capture without extra
+blits or renders on Unity.
+
+## Added
+- Added a new `highlightRecording` feature which enables recording the best parts of the gameplay,
+  in addition to the existing latest and timelapse strategies. Read more in
+  [the quickstart](https://docs.megacool.co/quickstart#b-highlight-recording).
+- Unity: You can now more easily customize the recording by explicitly attaching the MegacoolManager
+  to a camera in the scene, enabling you to keep hide UI elements or show overlays only to this
+  camera.
+- Unity: `OnReceivedShareOpened(megacoolEvent)` that gets called when a Megacool share is opened on
+  your device
+- Unity: `OnLinkClicked(megacoolEvent)` that gets called when your shared link is clicked
+- Unity: `OnSentShareOpened(megacoolEvent)` that gets called when your Megacool share is opened
+- Unity: `OnMegacoolEvents(List)` that gets called with all events at once
+- iOS: Copy GIF to pasteboard button in the UIActivityViewController
+- Android: Added an HTML version of the sharing intent text for apps that support it.
+- Android: Fallback images when GIFs are unavailable, similar to iOS (this has been available
+  through `ShareConfig` for some time already, but was very buggy and didn't work from Unity).
+- Android: forceAdd for timelapse recordings, similar to iOS.
+- Android (and Unity Android): Custom share buttons! Similar to what you can do on iOS you can now
+  target a specific app with a dedicated button. We've added support for the same channels as on
+  iOS: SMS, Mail, Facebook Messenger and Twitter. Call `shareToMessenger()`, `shareToMail()` etc
+  instead of the regular `share()` to use this.
+
+## Changed
+- Unity: You should no longer manually add the `MegacoolManager` to the scene, the prefab has been
+  removed and recording will magically work without it.
+- Unity: Recording has been rewritten to not require blitting or rendering a texture from Unity on
+  OpenGL ES3 apps, meaning higher performance capturing that is identical to what is shown on
+  screen. This automatically falls back to capturing via a texture on ES2 or Metal.
+- Unity: `Start(Action e)` is now deprecated. Use `Start()` and add callbacks to their respective
+  delegates.
+- Android: `enableDebugging` has been renamed to `setDebug` for parity with iOS and Unity.
+
+## Fixed
+- Unity: `MegacoolShareConfig` has been formatted to support fallback images on Android.
+- Unity: Recording on apps with multithreaded rendering has been fixed.
+- iOS: Crash if trying to set `keepCompletedRecordings` or `disableFeatures` while debug mode is on.
+- iOS: Crash if trying to send debug data before a recording has been started.
+- iOS: Sharing to Slack now makes the link clickable
+- iOS: The custom Twitter share now works again by copying the GIF to the pasteboard, opening
+  Twitter and letting the user paste the GIF.
+- Android: `SharingManager#share()` now runs mostly on a background thread to prevent
+  blocking the UI while the GIF is created.
+- Android: Setting last frame delay to 0 means the same as on iOS - the same delay as the other
+  frames.
+- Android: `resetIdentity()` was ignored if called after `start()`, but crashed if called before.
+  The crash has been fixed, this should still be called before `start()`.
+- Android: A race condition caused most state updates during timelapse capture from being persisted,
+  ensuring that hardly any frames were captured.
+- Android: Shares was sometimes not created correctly if network requests happened in a certain
+  order.
+
+
 2.5.1 - 2017-09-12
 ==================
 
