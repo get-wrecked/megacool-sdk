@@ -39,7 +39,6 @@ blits or renders on Unity.
   screen. This automatically falls back to capturing via a texture on ES2 or Metal.
 - Unity: `Start(Action e)` is now deprecated. Use `Start()` and add callbacks to their respective
   delegates.
-- Android: `enableDebugging` has been renamed to `setDebug` for parity with iOS and Unity.
 
 ## Fixed
 - Unity: `MegacoolShareConfig` has been formatted to support fallback images on Android.
