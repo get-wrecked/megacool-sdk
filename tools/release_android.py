@@ -284,6 +284,7 @@ def download_file_with_checksum(url, checksum):
     destination = tempfile.NamedTemporaryFile(delete=False)
     s3_object = s3.Object(bucket_name, key)
     s3_object.download_fileobj(destination)
+    destination.close()
 
     hash_state = hashlib.sha256()
     with open(destination.name, 'rb') as fh:
