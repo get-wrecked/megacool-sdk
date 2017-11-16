@@ -3,6 +3,34 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.1 - 2017-11-16
+==================
+
+## Deprecated
+- iOS: The instance methods of `continueUserActivity` and
+  `handleEventsForBackgroundURLSession:completionHandler` have been replaced with class methods,
+  to prevent a race condition if these were called before start(), causing universal link clicks to
+  not be noticed by the SDK. If you use the `MEGACOOL_DEFAULT_LINK_HANDLERS` macro you don't have to
+  do anything, otherwise you should change
+  `[[Megacool sharedMegacool] continueUserActivity:userActivity]` to
+  `[Megacool continueUserActivity:userActivity]` (and similarly for
+  `handleEventsForBackgroundURLSession`). The new `handleEventsForBackgroundURLSession` now also
+  returns a BOOL indicating whether we actually handled the events, or whether they should be passed
+  on to another handler.
+
+## Fixed
+- Unity Android: Stopped Proguard from complaining if building with gradle.
+- Unity: Ambiguity between current and deprecated `Start` methods.
+- Unity: Regression since 2.5.0 causing builds to fail on Unity 5.3. The fix included re-creating
+  the prefabs, which might break links to the old prefabs - make sure these are set correctly after
+  updating.
+- Unity: Crash if stopping preview before any frames have been loaded.
+- Unity: MegacoolLinkClickedEvents were not triggered for iOS universal links unless the app was
+  already running. The app would open correctly, but a lot of re-engagements would not have been
+  tracked correctly because of this.
+- Unity: Crash if clicking links where the share is missing.
+
+
 2.6.0 - 2017-11-03
 ==================
 
