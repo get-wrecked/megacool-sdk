@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.2 - 2017-12-01
+==================
+
+## Fixed
+- Android: Memory leak when the desired framerate is higher than what we can achieve on the device.
+- Android: Memory leak during capture.
+- Android: NullPointerException if calling captureFrame without a config.
+- Android: Drastically reduce the number of Java allocations made during capture.
+- Unity: Race condition that could cause us to gradually stop capturing new frames.
+
+
 2.6.1 - 2017-11-16
 ==================
 
