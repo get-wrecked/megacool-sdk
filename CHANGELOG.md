@@ -3,6 +3,16 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.3 - 2017-12-06
+==================
+
+## Fixed
+- Race condition that could allow extra frames to be added after pause/stop.
+- Memory leak when creating GIFs. For iOS this would only manifest if using the fixed color table.
+- Unity: Fix missing initialization of GifPreview if added in the same frame it's enabled.
+- iOS: Reduce peak memory usage when creating GIFs.
+
+
 2.6.2 - 2017-12-01
 ==================
 
