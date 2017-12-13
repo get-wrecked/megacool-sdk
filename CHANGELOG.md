@@ -3,6 +3,16 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.4 - 2017-12-13
+==================
+
+## Fixed
+- Android: No more allocations during capture!
+- iOS: Support for sharing GIF, link and text to KakaoTalk and Line.
+- iOS: Include image when sharing to Twitter with the default share, instead of only a text and
+  link.
+
+
 2.6.3 - 2017-12-06
 ==================
 
