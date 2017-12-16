@@ -3,6 +3,14 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+2.6.5 - 2017-12-16
+==================
+
+## Fixed
+- A sanity check for valid frames during capture was broken, letting black frames into the GIF and
+  preview instead of skipping them.
+
+
 2.6.4 - 2017-12-13
 ==================
 
