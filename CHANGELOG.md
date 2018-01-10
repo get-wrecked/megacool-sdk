@@ -3,6 +3,65 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.0.0 - 2018-01-10
+==================
+
+Mostly cleanup and bug fixes, but bumping the major version since iOS has gotten some
+backwards-incompatible changes. All the major iOS methods (startRecording, preview, share) now
+take configuration blocks instead of dictionaries, ensuring much less magic keys and more type
+safety.
+
+## Changed
+
+- `deleteRecording` now accepts nil/null to delete the default recording.
+- iOS: All recording and share methods now accept a configuration block instead of a dictionary,
+  receiving the new MCLRecordingConfig and MCLShareConfig objects.
+- iOS: The kMCLFeature and kMCLGIFColorTable types have been renamed without the k prefix (the
+  values are unchanged).
+- Android: Moved `GifImageView` from `co.megacool.megacool.widget` package to `co.megacool.megacool`
+  package.
+- Android: `lastFrameOverlay` moved from ShareConfig to `Megacool.setLastFrameOverlay`. This did
+  not go through the normal deprecation cycle since it wasn't widely used.
+- Android: Deep links are now automatically extracted even if you don't use the LinkClickedActivity,
+  thus you can move the Megacool `<intent-filter>`s to your main activity to save an extra activity
+  on startup.
+- Unity: The SDK will now warn if trying to build with an Android min API level lower than what is
+  supported by the SDK, and help setting it when opening the configuration in the Editor.
+
+## Deprecated
+- Passing a Share in the share configuration has been deprecated in favor of setting the url and
+  data directly.
+- Android: `ShareConfig.build()` has been deprecated in favor of `new ShareConfig()`.
+
+## Added
+- Get number of frames captured so far for a recording with `getNumberOfFrames`/`GetNumberOfFrames`.
+- iOS: MCLRecordingConfig and MCLShareConfig configuration objects.
+- iOS: Last frame overlay can now also be set by URL to an image on disk, with
+  `Megacool.lastFrameOverlayUrl`.
+- Android: If the `ACCESS_NETWORK_STATE` permission is granted network requests are retried faster,
+  but the permission is not required.
+- Android: lastFrameOverlay for gif previews and shares.
+- Android: Nullability annotations.
+- Unity: Last frame overlay support for Android.
+- Unity: NGUI support for gif previews.
+- Unity: Configure shared URL and associated data with .Url and .Data on MegacoolShareConfig.
+
+## Fixed
+- Android: Network requests like GIF uploads have been made more reliable, these are now
+  automatically retried later if the network is unavailable.
+- Android: GIF previews load one frame at a time to reduce memory consumption.
+- Android: Crash if trying to share from an app with a name that is not filesystem safe.
+- Unity: Reduced number of allocations during coroutine yields.
+
+## Removed
+- iOS: The `kMCLConfig*` constants have been removed in favor of dedicated configuration classes.
+- iOS: The deprecated methods `renderPreview` and `renderPreviewWithConfig` (deprecated since 2.5)
+  has been removed. Use `getPreview` instead.
+- iOS: Last frame overlay can no longer be configured in the `presentShare*` config dicts.
+  Per-recording overlays will probably be added to the recording config later though, in the
+  meantime you can set a default one with `Megacool.lastFrameOverlay`.
+
+
 2.6.5 - 2017-12-16
 ==================
 
