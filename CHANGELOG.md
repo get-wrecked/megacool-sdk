@@ -13,6 +13,7 @@ safety.
 
 ## Changed
 
+- Android: *You must now call `.destroy()` on GifImageViews* to avoid a memory leak.
 - `deleteRecording` now accepts nil/null to delete the default recording.
 - iOS: All recording and share methods now accept a configuration block instead of a dictionary,
   receiving the new MCLRecordingConfig and MCLShareConfig objects.
