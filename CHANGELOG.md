@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.0.1 - 2018-01-17
+==================
+
+## Fixed
+- Android: Race condition that could crash the app if some Android callbacks were called before the
+  SDK was fully initialized (introduced in 3.0.0).
+- Unity: Set PostProcessBuildAttribute to 1000 to prevent clash with other plugins.
+
+
 3.0.0 - 2018-01-10
 ==================
 
