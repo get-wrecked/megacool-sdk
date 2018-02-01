@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.0.2 - 2018-02-01
+==================
+
+## Fixed
+- Android: Don't trigger `LINK_CLICKED` events for unrelated referrers from the Play Store.
+
+
 3.0.1 - 2018-01-17
 ==================
 
