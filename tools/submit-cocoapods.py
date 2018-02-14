@@ -343,6 +343,7 @@ def build_podspec(version, release_url):
             s.preserve_paths = [
                 "LICENSE.md",
                 "CHANGELOG.md",
+                "third-party-licenses.md",
                 "Megacool.framework"
             ]
             s.libraries = "z"
