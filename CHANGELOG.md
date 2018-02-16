@@ -3,6 +3,45 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.0 - 2018-02-16
+==================
+
+## Changed
+- Android: Listeners and callbacks that you set are no longer guarded by our RuntimeException
+  guards, so you will now need to catch these yourself. This includes ShareListener, ShareCallback,
+  ShareFilter, and OnEventsReceivedListener.
+- iOS: If you're using Swift the added nullability annotations means you might have to remove some
+  optional markers.
+
+## Fixed
+- Slow share modal popup on both platforms. This has been made async, so on low-end devices it's
+  still possible the user will have to wait for the gif creation to finish if they are very fast
+  to select a share channel and the device is very slow.
+- Android: GIF color quality has gotten significantly better, comparable to what was available on
+  iOS using the AnalyzeFirst color table. The default now uses the new color table, but the old
+  behavior is available by setting `Megacool.setGifColorTable(GifColorTable.FIXED)`.
+- Android: When running under OpenGL ES2 some failure modes weren't detected properly and resulted
+  in black frames in the preview and GIF.
+- Android: Track share channels on newer devices like we do on iOS.
+- Android: Recordings are now automatically paused if a share is initiated.
+- Android: Close leaked connections when submitting debug data.
+- Unity: `MegacoolCaptureMethod.SCREEN` was never used when using OpenGL ES2, even though it often
+  works.
+
+## Added
+- Unity: Support for recording and previewing GIFs in the editor.
+- iOS: A new color table option kMCLGIFColorTableDynamic, which performs roughly like AnalyzeFirst,
+  but is also available on Android.
+- iOS: Nullability annotations.
+- Android: Share callbacks are now available as on iOS and Unity. See the docs for the
+  `Megacool#ShareListener` for details.
+- Android: `GifColorTable/Megacool.setGifColorTable()` can be used to customize the colors in the
+  GIFs created.
+
+## Deprecated
+- iOS: The `MCLShare` constructors were supposed to have been deprecated in 3.0.0, fixed now.
+
+
 3.0.2 - 2018-02-01
 ==================
 
