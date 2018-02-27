@@ -3,6 +3,22 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.1 - 2018-02-27
+==================
+
+## Fixed
+- Frames could bleed across recordings under Unity or custom engines.
+- When using the highlight recording the highlight was not positioned correctly if less than
+  maxFrames frames had happened since the highlight.
+- Unity: Excessive logging, particularly when running in the Editor.
+- Unity: Memory leak while recording from the Editor.
+- Unity: Default recording configuration set on the Megacool.Instance was not respected in the
+  Editor.
+- Android: Fixed bug causing custom share data to be ignored by the server due to missing date
+  information.
+- Android: Prevent potential crashes when opening the app from a referral.
+
+
 3.1.0 - 2018-02-16
 ==================
 
