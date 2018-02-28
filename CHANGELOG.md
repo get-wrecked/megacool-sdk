@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.2 - 2018-02-28
+==================
+
+## Fixed
+- Fix a race condition that could make capture stop working. This bug was introduced in 3.1.1.
+- Android: Fixed bug causing the share modal window to not be displayed in `Megacool.share()`, this
+  was introduced in 3.1.0.
+
+
 3.1.1 - 2018-02-27
 ==================
 
