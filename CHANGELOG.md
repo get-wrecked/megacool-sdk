@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.3 - 2018-03-03
+==================
+
+## Fixed
+- Android: Crash on older devices due to an invalid date format. Introduced in 3.1.1.
+- Unity iOS: Severe memory leak on ES2 devices due to an attempted fix for ES2 SCREEN capture
+  introduced in 3.1.0.
+- Unity Editor: ArgumentNullException when `Megacool.Instance.StartRecording` is called with a null
+  recordingId successively.
+
+
 3.1.2 - 2018-02-28
 ==================
 
