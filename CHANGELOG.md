@@ -3,6 +3,25 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.4 - 2018-03-16
+==================
+
+## Fixed
+- Android: GIF previews missing if some frames failed to load.
+- Unity: Frames would occasionally get corrupted when using `MegacoolCaptureMethod.BLIT` or
+  `MegacoolCaptureMethod.RENDER`.
+- Unity iOS: Memory leak while starting previews or getting the share text.
+- Unity iOS: Occasionally missing previews due to bad memory management. Introduced in 3.0.0.
+- Android: Multiple share modals no longer show up when rotating the device during a share.
+- Unity: Calling `MegacoolGifPreview.StartPreview()` with a preview already playing would cause it
+  to stop and hide the preview, instead of starting a new preview. Repeated calls to StartPreview
+  would also not start a new preview until StopPreview was called.
+- Unity: Previews would only show the last frame if frames failed to load at the target framerate,
+  instead of doing a best-effort rendering.
+- Unity: The last frame delay in the preview was one preview frame duration longer than it should
+  have been.
+
+
 3.1.3 - 2018-03-03
 ==================
 
