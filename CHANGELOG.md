@@ -3,6 +3,18 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.5 - 2018-04-03
+==================
+
+## Fixed
+- Android: A race condition in link click handling could prevent some installations from being
+  detected.
+- Unity/iOS: Fallback images and last frame overlays set from Unity or set by NSURL without a
+  file:// prefix was ignored.
+- Unity: Only check config keys if build target is IOS or Android
+- Restored Unity Editor recordings, this broke in 3.1.4.
+
+
 3.1.4 - 2018-03-16
 ==================
 
