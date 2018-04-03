@@ -9,9 +9,9 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 ## Fixed
 - Android: A race condition in link click handling could prevent some installations from being
   detected.
-- Unity/iOS: Fallback images and last frame overlays set from Unity or set by NSURL without a
+- Unity/iOS: Fallback images and last frame overlays set from Unity or set by a NSURL without a
   file:// prefix was ignored.
-- Unity: Only check config keys if build target is IOS or Android
+- Unity: Only check config keys if build target is iOS or Android.
 - Restored Unity Editor recordings, this broke in 3.1.4.
 
 
