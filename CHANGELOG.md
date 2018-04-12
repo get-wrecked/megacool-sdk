@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.6 - 2018-04-11
+==================
+
+## Fixed
+- Android: GIFs are no longer copied multiple times when they fail to be uploaded.
+- Android: If share uploads fail they are now discarded instead of being retried forever.
+- Unity: Accept 0 as a valid `lastFrameDelay` value, like the native SDKs.
+- iOS: Stop ignoring fallback images and last frame overlays *with* a `file://` prefix.
+  Introduced in 3.1.5.
+
+
 3.1.5 - 2018-04-03
 ==================
 
