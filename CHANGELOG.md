@@ -3,6 +3,25 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.7 - 2018-04-18
+==================
+
+## Fixed
+- Weak sanity check would discard frames with fully black bottom rows.
+- Android: Handling link clicks with the `LinkClickedActivity` no longer gets stuck on an empty
+  screen if the app was already opened.
+- Unity iOS: NullPointerException if calling any of the `Share*` methods with a ShareConfig that
+  didn't have both Data and Url set on some Unity versions.
+
+## Added
+- iOS: `[Megacool sharedMegacool].sharingStrategy` now enables setting whether GIFs or links should
+  be shared to channels that only support one of them. The default is GIF, which is the same as
+  we've done so far. Set this to `kMCLSharingStrategyLink` to prioritize links, needed if you want
+  referrals. Currently only affects WhatsApp.
+- Unity: Added `Megacool.Instance.SharingStrategy` to wrap the iOS sharing strategy (see above).
+  Setting this has no effect on other platforms.
+
+
 3.1.6 - 2018-04-11
 ==================
 
