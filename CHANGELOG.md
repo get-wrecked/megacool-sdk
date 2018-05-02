@@ -3,6 +3,23 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.8 - 2018-05-02
+==================
+
+## Changed
+- Android: `Megacool.setShareListener` has been made available for all API levels, and the
+  `didPossiblyCompleteShare` callback will always be called on API level 22 and below where we can't
+  detect anything more specific. This also affects Unity's `PossiblyCompletedSharing` delegate.
+
+## Fixed
+- iOS: GIFs would not get uploaded when sharing a recording more than once.
+- Android: Link clicks are handled even if the app is already open.
+- Android: A race condition in which the GIF file might be deleted before a share is completed when
+  the network fails.
+- Android: NullPointerException if `keepCompletedRecordings` or `sharingText` is attempted set
+  before `start()` is called.
+
+
 3.1.7 - 2018-04-18
 ==================
 
