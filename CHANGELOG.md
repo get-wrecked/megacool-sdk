@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.1.9 - 2018-05-22
+==================
+
+## Fixed
+- Unity: iOS crashing with DllNotFoundException when calling `GetNumberOfFrames`.
+
+
 3.1.8 - 2018-05-02
 ==================
 
