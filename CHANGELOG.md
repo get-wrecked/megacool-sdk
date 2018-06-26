@@ -3,6 +3,49 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.2.0 - 2018-06-26
+==================
+
+## Changed
+- GIF playback speeds are now adjusted according to the capture framerate that the device
+  is capable of recording at, preventing slower devices from getting sped-up recordings.
+- iOS: The default sharing strategy is now links. Set
+  `[Megacool sharedMegacool].sharingStrategy = kMCLSharingStrategyGif` if you want the old behavior.
+
+## Deprecated
+- Android: The `LinkClickedActivity` has been deprecated. Please use your own Activity to handle
+  intents with the `android.intent.action.VIEW` action (such as the MainActivity). See the
+  quickstart guide or the documentation for `co.megacool.megacool.LinkClickedActivity` for details.
+
+## Fixed
+- Less bandwidth usage due to uploading mp4 instead of gifs.
+- Less bandwidth usage on multiple shares by only uploading media file once.
+- Android: Moved some disk operations that could have caused UI jank off the main thread.
+- Android: GIF creation would stop entirely if the last frame errored for some reason when using the
+  dynamic color table, instead of ignoring the frame as it should.
+- Android: Fix potential native code crash when reading captured frame data.
+- iOS: Linker error on iOS7 Unity apps.
+- iOS: Improve the sharing experience to Discord, Kik, Hangouts, Telegram, Yahoo Mail and Zalo.
+- Unity iOS: No longer shares gif fallback as still images.
+
+## Removed
+- Android: The deprecated `Share()` constructors have been removed. To set a custom url or add extra
+  parameters to shares, please use the `ShareConfig()` class instead.
+- iOS: Removed deprecated `MCLShare` constructors.
+- iOS: Removed deprecated `MCLShare *share` property from the `MCLShareConfig` class.
+- iOS: Removed deprecated `handleEventsForBackgroundURLSession:completionHandler:` method from
+  `Megacool`.
+- iOS: Removed deprecated `continueUserActivity:` method from `Megacool`.
+- Unity: The deprecated `Start(Action<MegacoolEvent> eventHandler)` initializer has been removed.
+- Unity: The deprecated `Share(Url, Data)` constructors have been removed. Set these properties on
+  the ShareConfig instead. The `ShareConfig.Share` property has also been removed.
+- Unity: The deprecated `ShareConfig.LastFrameOverlay` property has been removed, set this on the
+  Megacool instance instead.
+- Unity Android: MegacoolUnityDeepLink activity has been removed. If you manually manage your
+  manifest merging, please see our Android Quickstart guide for details on how to update your
+  AndroidManifest.xml file.
+
+
 3.1.9 - 2018-05-22
 ==================
 
