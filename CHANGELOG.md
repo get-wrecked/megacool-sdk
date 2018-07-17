@@ -3,6 +3,21 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.2.1 - 2018-07-17
+==================
+
+## Fixed
+- Android: Fix a crash during initialization of the native libraries we use. The SDK will operate
+  in a degraded state where recording doesn't work if this happens, but sharing and referrals work
+  as normal.
+- iOS: Remove misleading log message about missing config if `continueUserActivity:` is called
+  before `startWithAppConfig:`, which often happens under Unity under normal circumstances.
+- Android: Prevent creation of multiple link clicked events when switching between recent apps.
+- Android: Sharing to Discord previously wouldn't allow the user to return to the game unless they
+  force-closed the app. This is a bug in Discord, but we added a workaround that enables getting
+  back to the app through the task manager.
+
+
 3.2.0 - 2018-06-26
 ==================
 
