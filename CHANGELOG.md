@@ -3,6 +3,47 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.0 - 2018-08-20
+==================
+
+The automatic frame rate adjustment changes we introduced in 3.2 caused devices that couldn't
+capture at the intended frame rate (usually 10fps) to play back the content at the frame rate they
+actually managed, like 8. This caused recordings to be quite choppy, whereas earlier this had been
+camouflaged by them always being played back at the intended rate, like 10fps, and thus getting a
+slight speedup. To try to keep recordings smooth in most cases we're now defaulting to speeding them
+up a little bit to get back the old behavior.
+
+## Changed
+- If you haven't set an explicit playback framerate we will now default to 20% speedup from the
+  capture frame rate. This prevents devices that can't capture at higher frame rates from getting
+  choppy recordings, but can of course be overridden by setting an explicit playback framerate.
+- Unity iOS: Previews now includes the last frame overlay, if set.
+- iOS: Roll back to send gifs instead of video for Messages, for better quality when sent as MMS.
+
+## Added
+- Android: You can now use `Megacool.setSharingStrategy` to choose whether gifs or links should be
+  prioritized for channels that support either, but not both at the same time. This is the same as
+  iOS has had for some time, and defaults to prioritize links.
+
+## Fixed
+- Native crash if some initialization methods are called out of order.
+- Android: Any callbacks (with the exception of the ShareFilter) you give to us are now run on the
+  same thread you create them on.
+- iOS: The recording was missing if sharing the same recording twice with `presentShareToMessages`.
+- Android: Retry failed http requests faster if it's for a request that might cause
+  `receivedShareOpened` events to be received.
+- Android: Calls to `Megacool.share()` are now debounced to prevent multiple taps from creating
+  multiple share prompts.
+
+## Removed
+- Android: The deprecated ShareConfig.Builder class, construct a ShareConfig directly instead.
+- Android: The deprecated LinkClickedActivity. Add the Megacool intent-filters to your main activity
+  instead.
+
+## Deprecated
+- iOS: The `includeLastFrameOverlay` option in `MCLPreviewConfig` is now deprecated.
+
+
 3.2.1 - 2018-07-17
 ==================
 
