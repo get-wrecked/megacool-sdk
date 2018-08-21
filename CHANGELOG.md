@@ -3,6 +3,14 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.1 - 2018-08-21
+==================
+
+## Fixed
+- Unity: Actually set SharingStrategy on Android.
+- Android: Improved the sharing experience to Line and Viber.
+
+
 3.3.0 - 2018-08-20
 ==================
 
