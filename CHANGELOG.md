@@ -3,6 +3,19 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.2 - 2018-08-29
+==================
+
+## Fixed
+- Unity: Events on Android had the wrong type, everything was classified as receivedShareOpened.
+  This bug was introduced in 3.3.0.
+- Android: Event sending and notification retrieval are more reliable now.
+- Android: `getPreviewData` would return an empty frame set if the last frame failed to decode when
+  trying to apply a lastFrameOverlay.
+- Android: Completed recordings were deleted when the app shutdown even if `keepCompletedRecordings`
+  was enabled.
+
+
 3.3.1 - 2018-08-21
 ==================
 
