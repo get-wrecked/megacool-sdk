@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.3 - 2018-09-10
+==================
+
+## Fixed
+- Unity: Target size computation has been improved to prevent very large GIFs on several devices,
+  improving performance.
+- iOS: Crash if trying to load invalid frame for encoding.
+- Events will no longer be attempted delivered while the app is buing put in the background,
+  increasing the reliability of the sentShareOpened event.
+
+
 3.3.2 - 2018-08-29
 ==================
 
