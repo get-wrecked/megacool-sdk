@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.4 - 2018-09-14
+==================
+
+## Fixed
+- Android: Methods that take callbacks (like `getShares`) that was called from threads without a
+  Looper stopped working after the same-thread callback fixes in 3.3.0. We'll run these callbacks
+  run from a background thread in these cases (similar to pre-3.3.0 behavior) now. If you would like
+  your callbacks to be run on the same thread that you give them to us on, use a `HandlerThread` or
+  ensure that the thread has a `Looper`.
+
+
 3.3.3 - 2018-09-10
 ==================
 
