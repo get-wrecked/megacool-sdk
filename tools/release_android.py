@@ -12,6 +12,7 @@ import subprocess
 import tarfile
 import tempfile
 import urllib.parse
+import uuid
 import xml.etree.ElementTree as ET
 from functools import total_ordering
 from collections import defaultdict, namedtuple
@@ -94,6 +95,9 @@ def main():
     upload_maven_release(unpacked_artifact)
     print('Uploading new manifest')
     upload_maven_manifest(new_manifest)
+
+    print('Uploading proguard mappings to Sentry')
+    upload_proguard_mappings(args.version)
 
     print('Tagging source commit')
     tag_source_commit(release_spec['commit'], args.version)
@@ -345,6 +349,25 @@ def _checkout_repository(url, directory, branch):
         'rebase', 'origin/%s' % branch,
         '--quiet',
     ])
+
+def upload_proguard_mappings(version):
+    flavors = {
+            'prod': 'Android',
+            'unity': 'Unity',
+            }
+    namespace = uuid.uuid5(uuid.NAMESPACE_DNS, 'megacool.co')
+    for flavor,platform in flavors.items():
+        mapping_uuid = uuid.uuid5(namespace, '%s/%s' % (str(version), platform))
+        manifest_path = 'megacool/build/intermediates/manifests/full/%s/release/AndroidManifest.xml' % (flavor)
+        mapping_path = 'megacool/build/outputs/mapping/%s/release/mapping.txt' % (flavor)
+        subprocess.check_call([
+            'sentry-cli',
+            'upload-proguard',
+            '--android-manifest', manifest_path,
+            '--uuid', mapping_uuid,
+            mapping_path,
+            ])
+
 
 
 def get_args():
