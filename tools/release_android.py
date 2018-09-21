@@ -350,24 +350,24 @@ def _checkout_repository(url, directory, branch):
         '--quiet',
     ])
 
+
 def upload_proguard_mappings(version):
     flavors = {
-            'prod': 'Android',
-            'unity': 'Unity',
-            }
+        'prod': 'Android',
+        'unity': 'Unity',
+    }
     namespace = uuid.uuid5(uuid.NAMESPACE_DNS, 'megacool.co')
-    for flavor,platform in flavors.items():
-        mapping_uuid = uuid.uuid5(namespace, '%s/%s' % (str(version), platform))
-        manifest_path = 'megacool/build/intermediates/manifests/full/%s/release/AndroidManifest.xml' % (flavor)
-        mapping_path = 'megacool/build/outputs/mapping/%s/release/mapping.txt' % (flavor)
+    for flavor, platform in flavors.items():
+        mapping_uuid = uuid.uuid5(namespace, '%s/%s' % (version, platform))
+        manifest_path = 'megacool/build/intermediates/manifests/full/%s/release/AndroidManifest.xml' % flavor
+        mapping_path = 'megacool/build/outputs/mapping/%s/release/mapping.txt' % flavor
         subprocess.check_call([
             'sentry-cli',
             'upload-proguard',
             '--android-manifest', manifest_path,
             '--uuid', mapping_uuid,
             mapping_path,
-            ])
-
+        ])
 
 
 def get_args():
