@@ -363,7 +363,7 @@ def upload_proguard_mappings(version, release_spec):
                 '--project', 'android-sdk',
                 '--app-id', 'co.megacool.megacool',
                 '--uuid', get_proguard_mapping_identifier(version, platform),
-                '--version', version,
+                '--version', str(version),
                 mapping_path,
             ])
 
