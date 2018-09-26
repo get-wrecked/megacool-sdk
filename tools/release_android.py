@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import argparse
+import contextlib
 import datetime
 import hashlib
 import io
@@ -12,6 +13,7 @@ import subprocess
 import tarfile
 import tempfile
 import urllib.parse
+import uuid
 import xml.etree.ElementTree as ET
 from functools import total_ordering
 from collections import defaultdict, namedtuple
@@ -94,6 +96,9 @@ def main():
     upload_maven_release(unpacked_artifact)
     print('Uploading new manifest')
     upload_maven_manifest(new_manifest)
+
+    print('Uploading proguard mappings to Sentry')
+    upload_proguard_mappings(args.version, release_spec)
 
     print('Tagging source commit')
     tag_source_commit(release_spec['commit'], args.version)
@@ -345,6 +350,41 @@ def _checkout_repository(url, directory, branch):
         'rebase', 'origin/%s' % branch,
         '--quiet',
     ])
+
+
+def upload_proguard_mappings(version, release_spec):
+    tag = release_spec['commit'][:20]
+    for platform in ('Android', 'Unity'):
+        with get_mapping(platform, version, tag) as mapping_path:
+            subprocess.check_call([
+                'sentry-cli',
+                'upload-proguard',
+                '--org', 'megacool',
+                '--project', 'android-sdk',
+                '--app-id', 'co.megacool.megacool',
+                '--uuid', get_proguard_mapping_identifier(version, platform),
+                '--version', version,
+                mapping_path,
+            ])
+
+
+@contextlib.contextmanager
+def get_mapping(platform, version, tag):
+    mapping_key = 'android-sdk/mappings/%s-%s-%s/mapping.txt' % (platform.lower(), version, tag)
+    s3_object = s3.Object('megacool-build-artifacts', mapping_key)
+    mapping = s3_object.get()['Body'].read()
+    mapping_file = tempfile.NamedTemporaryFile(delete=False)
+    try:
+        with mapping_file:
+            mapping_file.write(mapping)
+        yield mapping_file.name
+    finally:
+        os.remove(mapping_file.name)
+
+
+def get_proguard_mapping_identifier(version, platform):
+    namespace = uuid.uuid5(uuid.NAMESPACE_DNS, 'megacool.co')
+    return str(uuid.uuid5(namespace, '%s/%s' % (version, platform)))
 
 
 def get_args():
