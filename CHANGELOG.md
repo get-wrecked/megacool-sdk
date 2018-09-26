@@ -3,6 +3,33 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.5 - 2018-09-26
+==================
+
+## Fixed
+- Android: The `Megacool.shareToX()` methods now _only_ include the packages related to the channel
+  you've selected. This was a regression from 3.3.0.
+- Unity: Warnings when updating the SDK that the UUIDs for files have changed. You might see the
+  warning once when applying this update, but shouldn't see it anymore after that.
+- Unity: Incorrect platform markers for libMegacool-Unity.a causing Android builds to fail with
+  "Unknown CPU architecture for library".
+- Unity: Improve capture reliability for games running at 30fps.
+- Android: One more issue was found with getShares from threads without a looper, this should now
+  be fully resolved.
+- Android: `Megacool.deleteRecording()` will also purge stale data from memory in addition to
+  removing it from disk.
+- Android: The SDK would not have been correctly initialized on some devices that couldn't encode
+  MP4.
+- iOS: Explicitly declare external properties as `strong` to avoid warnings in non-ARC projects.
+- Android: Out of memory error if a failing method (like `getShares` on a non-looper thread) is
+  called repeatedly.
+
+## Deprecated
+- Android: All `Megacool.share()` and `Megacool.shareTo*()` methods have been deprecated in favor of
+  equivalent variants that take in an `Activity` as the first parameter. This should prevent
+  Exceptions that prevent the share modal from appearing on some devices.
+
+
 3.3.4 - 2018-09-14
 ==================
 
