@@ -42,13 +42,13 @@ class Release(object):
 
 
     def download_url(self, platform):
-        base_url = 'https://megacool-files.s3-accelerate.amazonaws.com'
+        base_url = 'https://files.megacool.co'
         if platform == 'Unity':
             filename = 'Megacool.unitypackage'
         elif platform == 'iOS':
             return '%s/megacool-sdk-ios-v%s.zip' % (base_url, self.version)
         elif platform == 'Android':
-            repo_url = 'https://megacool-maven-repo.s3-accelerate.amazonaws.com/releases'
+            repo_url = 'https://maven.megacool.co/releases'
             return '{0}/co/megacool/megacool/{1}/megacool-{1}.aar'.format(repo_url, self.version)
         else:
             raise ValueError('Invalid platform: %s' % platform)
