@@ -1,7 +1,0 @@
-awscli
-boto3
-jinja2
-psycopg2
-pytest
-requests
-watchdog
