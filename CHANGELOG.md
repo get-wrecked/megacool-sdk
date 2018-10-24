@@ -3,6 +3,25 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.6 - 2018-10-24
+==================
+
+## Fixed
+- Unity: Recording would stop if the MegacoolManager was deactivated and reactivated, like in a
+  scene change.
+- Recording could end up in a state where no more frames were captured if the device couldn't
+  achieve the target capture frame rate.
+- If the device wasn't capable of recording at the target frame rate, timelapse recordings
+  would lower it's playback frame rate. This is intended for latest and highlight recordings, but
+  not timelapses.
+- iOS: `pauseRecording` was ignored for timelapse recordings.
+- iOS: If `keepCompletedRecordings` was set to true, then later set to false, existing recordings on
+  disk wouldn't be cleaned up, only ones recorded after the configuration change.
+- iOS: Multiple timelapse recordings after each other with the same `recordingId` would capture
+  gradually less and less frames unless `keepCompletedRecordings` was set.
+- Android: Removed misleading warning when setting recordingId null through RecordingConfig.
+
+
 3.3.5 - 2018-09-26
 ==================
 
