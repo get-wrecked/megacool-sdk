@@ -3,6 +3,23 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+3.3.7 - 2018-11-19
+==================
+
+## Changed
+- Default sharing to Kik is now link only, set sharing strategy to GIF to revert to the old
+  behavior.
+- Android: Sharing to Snapchat and Reddit now defaults to link, set sharing strategy to GIF to
+  revert to the old behavior.
+
+## Added
+- iOS: Support for sharing GIFs to Twitter and Snapchat.
+
+## Fixed
+- Android: Couldn't return to app after sharing to Snapchat or Facebook Lite.
+- Android: Hangouts, Messages and Facebook Lite doesn't show up twice in the share modal anymore.
+
+
 3.3.6 - 2018-10-24
 ==================
 
