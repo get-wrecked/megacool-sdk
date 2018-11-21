@@ -11,6 +11,7 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
   behavior.
 - Android: Sharing to Snapchat and Reddit now defaults to link, set sharing strategy to GIF to
   revert to the old behavior.
+- Android: Sharing to YouTube now includes the text and link in the video description.
 
 ## Added
 - iOS: Support for sharing GIFs to Twitter and Snapchat.
