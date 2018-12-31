@@ -3,6 +3,103 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.0 - 2018-12-31
+==================
+
+## Changed
+- Several methods for setting default values for recording and sharing have been replaced with
+  `setDefaultRecordingConfig` and `setDefaultShareConfig`, respectively. This will like earlier be
+  merged with the config given directly to the recording and share methods to produce the final
+  config for the given action. On iOS we've also moved a couple properties that weren't earlier
+  possible to customize on a per-share or per-recording basis like last frame delay, last frame
+  overlay, sharing strategy, share message into either `MCLRecordingConfig` or `MCLShareConfig`
+  to fix that.
+- `forceAdd` has been removed from the recording config. We've added a new `captureFrame` method
+  with a third boolean parameter for `forceAdd` in its place.
+- The default sharing text has been changed from "No way you'll beat my score" to "Check out
+  this game I'm playing!".
+- Unity: Some files have been deleted from earlier versions, make sure you delete the following
+  files or they might cause compilation errors:
+    Assets/Megacool/Plugins/libMegacool-Unity.a
+    Assets/Megacool/Scripts/MegacoolFrameCaptureConfig.cs
+    Assets/Megacool/Scripts/MegacoolPreviewConfig.cs
+    Assets/Megacool/Plugins/include/Megacool/MegacoolUnity.h
+- Android: Many static methods on `Megacool` related to recording and sharing including
+  `startRecording()`, `stopRecording()`, `captureFrame()`, and the various `share()` and
+  `shareTo()` methods have been replaced with instance equivalents. Calling `Megacool.start()`
+  now returns an instance, and you can also get an instance by calling `Megacool.getInstance()`.
+- Android: The SDK is now compatible with Android API level 16 (used to be 18), but recording is
+  still 18+. Below 18 there's only sharing of fallback images available.
+- iOS: Default sharing to Kik is now link only, set sharing strategy to Media to revert to the old
+  behavior.
+- iOS: `MCLSharingStrategy` option "GIF" has been renamed to "Media", as this option will
+  prioritize any kind of media, not only GIFs (like fallbacks).
+- iOS: `MCLCaptureMethod.kMCLCaptureMethodOpenGL` has been split into
+  `MCLCaptureMethod.kMCLCaptureMethodOpenGLES2` and `MCLCaptureMethod.kMCLCaptureMethodOpenGLES3`.
+- iOS: The type of `MCLRecordingConfig.frameRate` has been changed from float to int.
+- Android: `Megacool.CaptureMethod.OPENGL` has been split into two variants:
+  `Megacool.CaptureMethod.OPENGLES2` and `Megacool.CaptureMethod.OPENGLgES3`.
+- Android: `OverflowStrategy` has been made an actual enum. This shouldn't require any changes to
+  your code as the syntax remains the same.
+- Unity: `MegacoolFrameCaptureConfig` has been removed, `CaptureFrame` now takes in the same
+  configuration object as `StartRecording`.
+- Unity: `MegacoolReferralCode.InviteId` has been renamed to `MegacoolReferralCode.UserId` to be
+  consistent with the other platforms.
+- Unity: The configuration menu item has been moved to Window/Megacool.
+- Unity: `MegacoolGifPreview.GetNumberOfFrames()` now returns the number of frames loaded in the
+  preview, use this to sanity check frame counts before showing the preview.
+  `Megacool.GetNumberOfFrames()` is available for checking for other non-preview related causes.
+- Unity: The type of `MegacoolOverflowStrategy` is changed to enum.
+- Unity: The type of `MegacoolShareConfig` and `MegacoolRecordingConfig` has changed from struct to
+  class.
+- Android: `RecordingConfig.lastFrameOverlayUrl` has been renamed to `lastFrameOverlayAsset()`, to
+  clarify that it only works with asset filenames.
+
+## Added
+- iOS: Support for sharing gifs to Snapchat.
+- Android: You can now call `Megacool.setOnUserIdReceivedListener()` to receive the `userId` once it
+  becomes available
+- Android and iOS: There is now an additional `Megacool.setCaptureMethod()` method that takes in a
+  scale factor as the second parameter. This allows you to customize the scaling performed during
+  capture, which may be useful if your UI contains important text elements that were previously
+  unreadable with the default scaling. We've also added some documentation to explain our default
+  scaling algorithm so you can determine if this is suitable or not for your needs. Note that we
+  generally don't recommend using this to produce larger recordings at the moment, as performance is
+  likely to suffer with much larger recordings.
+- Unity: If you're using a custom Android main activity (anything else than
+  `com.unity3d.player.UnityPlayerActivity`), you can now set this in the configuration panel to
+  ensure the manifests are merged correctly.
+
+## Removed
+- Cropping has been removed from the recording config since it didn't work reliably. On Unity the
+  unused `Megacool.Crop` struct was also removed.
+- iOS: `Megacool.initCapture` has been removed. You can now just call `Megacool.setCaptureMethod`
+  and we'll do the capture initialization for you.
+- iOS: `MCLPreviewConfig.includeLastFrameOverlay` has been removed. The previews will now always
+  show last frame overlay, if one is set.
+- Android: `Megacool.initCapture()` has been removed. If you were calling this, just calling
+  `Megacool.setCaptureMethod()` is now enough and we'll handle the capture initialization for you.
+- Unity: The keyword arguments to the MegacoolRecordingConfig constructor. Use object initializers
+  instead.
+
+## Fixed
+- Unity iOS: Fix crash if trying to delete the default recording.
+- iOS: `application:openURL:options` now correctly reports  whether the link was handled by Megacool
+  or not.
+- Android: Recordings are now only scaled down instead of scaled down and cropped.
+- Android: The bandwidth for multiple shares of the same media has been reduced
+- Android: Several recording methods formerly did disk operations on the main thread, these have
+  now been moved to the background.
+- Android: Fixed a possible ANR during SDK initialization on some devices.
+- Unity: Compiler warning on Unity 2018.1 and newer in MegacoolPrebuild.
+- Unity: Updating the SDK no longer overwrites any local changes made to the Android manifest.
+- Unity: Error in the Editor when pausing the default recording.
+
+## Deprecated
+- Android: `ShareConfig.fallbackImageUrl` have been deprecated in favor of
+  `ShareConfig.fallbackImageAsset`, since the former didn't actually support arbitrary urls.
+
+
 3.3.7 - 2018-11-19
 ==================
 
