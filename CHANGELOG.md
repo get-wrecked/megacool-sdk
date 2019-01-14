@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.1 - 2019-01-14
+==================
+
+## Fixed
+- Unity: `MegacoolEvent.Data` was null for `ReceivedShareOpened` events on iOS.
+
+
 4.0.0 - 2018-12-31
 ==================
 
