@@ -3,6 +3,21 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.2 - 2019-01-25
+==================
+
+## Fixed
+- Race condition that could cause a crash if a recording was started just after initialization when
+  using OpenGL.
+- Unity: The default sharing strategy when using the MegacoolShareConfig was accidentally changed
+  to MEDIA in 4.0.0, this has been restored to LINK (as the docs claimed it should be).
+- Android: When sharing without a recording and without a fallback image, some of the apps you could
+  select could hang waiting for content.
+- Android: Share destinations that only accept text didn't show up in the share modal.
+- Unity Editor: Exception when trying to remove the default recording.
+- Unity: Possible exception during GIF preview if a frame failed to load.
+
+
 4.0.1 - 2019-01-14
 ==================
 
