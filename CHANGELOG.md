@@ -3,6 +3,16 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.3 - 2019-01-30
+==================
+
+## Fixed
+- iOS: Optimize sharing to VK, now includes a GIF.
+- iOS: Enable sharing to Sina Weibo.
+- Android: Optimize sharing to KakaoTalk. Used to be media only, now does link with still image
+  preview by default, and the old behavior if strategy is set to MEDIA.
+
+
 4.0.2 - 2019-01-25
 ==================
 
