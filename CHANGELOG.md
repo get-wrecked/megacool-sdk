@@ -3,6 +3,16 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.5 - 2019-01-31
+==================
+
+## Fixed
+- iOS: Frames could appear in the recording that was rendered after a call to `pauseRecording` or
+  `stopRecording`.
+- Android: Sharing to WeChat now respects the sharing strategy, instead of always sending just the
+  GIF.
+
+
 4.0.3 - 2019-01-30
 ==================
 
