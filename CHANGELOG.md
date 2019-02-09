@@ -3,6 +3,26 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.0.6 - 2019-02-09
+==================
+
+## Fixed
+- Android: A build error when using older versions of gradle due to lint.jar being included in the
+  aar.
+- Unity: Share configs and recording configs weren't merged correctly, what was given in the panel
+  could override what was set in the default if also passing a config directly to `Share()`. This
+  now resolves as expected, where each property is first checked in the config given directly to
+  `Share()`, then the default, then the panel.
+- Unity iOS: `message` and `strategy` on the `ShareConfig` and `lastFrameOverlay`, `lastFrameDelay` and
+  `playbackFrameRate` on the recording config wasn't set when used from Unity.
+- Android: Work around an issue where our internal exception handler seems to be overwritten on
+  Huawei devices, causing what should have been simply a missing recording to fully crash the app.
+
+## Added
+- Unity: The default sharing strategy and fallback media can now also be set in the configuration panel.
+- Unity: The recording last frame overlay can now also be set in the configuration panel.
+
+
 4.0.5 - 2019-01-31
 ==================
 
