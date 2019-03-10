@@ -3,6 +3,79 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.1.0 - 2019-03-10
+==================
+
+We've overhauled the event callback APIs to make it easier and safer to use, with less dictionaries
+with magic keys. Now every platform has dedicated classes for each event which clearly documents
+available properties, and a new initializer to set the callbacks.
+
+## Changed
+- The `userId` and `shareId` on ReferralCode's have been changed from nullable to nonnull.
+- Unity: `MegacoolShare.MegacoolShareState` has been renamed to `MegacoolShare.ShareState`, and the
+  fields have been capitalized. While this is technically a breaking change we didn't roll to a
+  major version since we don't believe this API is widely used yet.
+- iOS: `-[Megacool getPreviewDataForRecording]` was incorrectly annotated as nonnull. The docs
+  correctly stated that it's nullable.
+- Android: Removed dependency on appcompat for native Android.
+- Android: `ShareConfig` no longer implements `Cloneable`.
+
+## Added
+- A new and better API for callbacks, with dedicated classes for each of the main events emitted by
+  the SDK.
+  iOS: `+[Megacool startWithAppConfig:andConfigBlock]` and more methods on the `MCLDelegate`.
+  Android: `Megacool.Start(MegacoolConfig)` and a new `EventListener` class you can extend.
+  Unity: `Megacool.Instance.LinkClicked`, `Megacool.Instance.SentShareOpened`
+  and `Megacool.Instance.ReceivedShareOpened`, register your delegates on these before calling
+  `Megacool.Instance.Start()`.
+- An API to get the score for highlight recordings. This enables you to f. ex only show a preview
+  for recordings that a minimum level of interesting things happening.
+  iOS: `-[Megacool getRecordingScore:]`
+  Android: `getRecordingScore(String recordingId)`
+  Unity: `Megacool.Instance.GetRecordingScore(string recordingId)`
+- iOS: A new "Copy link" share target. This replaces the existing "Copy to pasteboard" to clearer
+  communicate what is being copied. This will be rolled out gradually, so you might not see this
+  immediately.
+- Android/Unity Android: You can now customize the title of the share modal. The default is (still)
+  "Share GIF".
+  Android: `ShareConfig.modalTitle(String modalTitle)`
+  Unity: `MegacoolShareConfig.ModalTitle`
+
+## Fixed
+- iOS: Sharing to WhatsApp and Kik always preferred media instead of links.
+- Unity iOS ignored the playback framerate.
+- Android: Sharing to apps that needed video or link previews didn't always actually get the media
+  attached on Android 5.0.
+- iOS: The docs for `getShares` said network requests would only happen if a callback was given,
+  this was wrong and has been fixed. Every call to `getShares` will cause a network request.
+- Android: `getNumberOfFrames` for latest and highlight recordings would return the total number of
+  frames seen instead of the number of frames that would actually be included in a share.
+- Unity: Prevent compilation errors when upgrading from pre-4.0.0 SDKs by adding back an empty
+  `MegacoolFrameCaptureConfig`.
+
+## Deprecated
+- iOS: `MCLEvent` has been deprecated in favor of the new dedicated event classes.
+- iOS: The old callback-constructor `+[Megacool startWithAppConfig:andEventHandler]` have been
+  deprecated in favor of the new constructor which takes in a config block that operates on a
+  `MCLMegacoolConfig`.
+- iOS: `Megacool.delegate` have been deprecated in favor of setting the delegate during
+  initialization with `MCLMegacoolConfig`.
+- iOS: The "Copy GIF" share target will be gradually removed. We think "Copy link" will generally
+  provide a better experience as there's less confusion with where you can paste the GIF and easier
+  to share.
+- Android: `Event` have been deprecated in favor of the dedicated event classes used by
+  `EventListener`.
+- Android: `Megacool.start(Context, String, OnEventsReceivedListener)` has been deprecated in favor
+  of the new `Megacool.start(Context, String, MegacoolConfig)`.
+- Unity: `Megacool.OnLinkClicked`, `Megacool.OnSentShareOpened`, `Megacool.OnReceivedShareOpened`
+  and `Megacool.OnMegacoolEvents` have been deprecated in favor of the new API (see "Added").
+- Unity: `MegacoolEvent` have been deprecated in favor of the new dedicated event classes.
+
+## Removed
+- Android: The undocumented method `Share.getShareId()` has been removed. If you needed this, use
+  `Share.getReferralCode().getShareId()` instead.
+
+
 4.0.6 - 2019-02-09
 ==================
 
