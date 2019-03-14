@@ -3,6 +3,13 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.1.1 - 2019-03-14
+==================
+
+## Fixed
+- Unity Android: Native crash during SDK initialization on API 16 and 17.
+
+
 4.1.0 - 2019-03-10
 ==================
 
