@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.1.2 - 2019-03-19
+==================
+
+## Fixed
+- iOS: Sharing to Gmail and WeChat is now possible.
+- Unity: If a recording was deleted while a preview for the same recording was running, the preview
+  would show a red question mark. This now freezes on the last successfully loaded frame instead.
+
+
 4.1.1 - 2019-03-14
 ==================
 
