@@ -3,6 +3,59 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.2.0 - 2019-04-04
+==================
+
+We've added the ability to fully customize the links shared from the SDK! Not only can you now use
+your own domain for the links, like `mygame.example.com`, you can also set the path, and it can be
+shared between games. This enables you to have `example.com/games/mygame` for one title, and
+`exampe.com/games/newgame` for another. This is what we call the base url, to which the share url
+(set with `ShareConfig.url(Url)`) will be appended. The absolute url shared will thus be on the
+form `https://<base-url><share-url>?_m=<referral-code>`.
+
+The default base url remains `mgcl.co/<app-identifier>`. Custom base urls is a premium feature
+which is currently in beta, contact us if you want to help test this in your game and we'll help
+you get it set up. Note that while the feature is still in beta there's no documentation of it
+outside the SDK reference docs.
+
+## Added
+- *Custom base urls*: Fully configure the url shared from the SDK.
+    Unity: Set the base url in the config panel.
+    iOS: Add the new base url as an associated domain, and set `MCLMegacoolConfig.baseUrl`.
+    Android: Configure the manifest to use the string variables `megacool_base_url_host` and
+             `megacool_base_url_path` instead of the old `megacool_identifier` and `megacool_host`,
+             and set these variables to your new base url.
+- iOS: *Set where the share modal appears on iPads*. With the default behavior it appears in the
+  upper left corner, but you can now make this appear next to the share button.
+  Unity: Set `ModalLocation` and `ModalPermittedArrowDirections` on the `MegacoolShareConfig`.
+  iOS: Set `popoverSourceView` (renamed from the old `sourceView`), `popoverSourceRect` and
+       `popoverPermittedArrowDirections` on the `MCLShareConfig`.
+- Unity Android can now be built for *arm64-v8a* in addition to the existing ABIs (armeabi-v7a and
+  x86).
+
+## Fixed
+- iOS: Sharing to Viber and Gmail now includes the gif.
+- Unity Android: We've added the Play Services Resolver library to ensure unused ABIs are stripped
+  from the final apk, enabling us to include arm64-v8a ABIs.
+- iOS: The network activity indicator wasn't always turned off when a recording upload finished.
+- iOS: In 4.1.0 the deprecated symbols for `MCLEventDataReceiverUserId` and
+  `MCLEventDataSenderUserId` was fully deleted instead of just deprecated, these have been
+  temporarily added back.
+- iOS: Recordings that failed to be uploaded would be left on disk for a week before being cleaned
+  up. This is now cleaned up immediately.
+- iOS: Save to camera roll was accidentally enabled as an option in 4.1.0, but didn't actually do
+  anything. This has been removed, but might be re-added later when we can actually make it work
+  reliably.
+
+## Deprecated
+- iOS: `MCLShareConfig.sourceView` has been deprecated in favor of
+  `MCLShareConfig.popoverSourceView`.
+
+## Removed
+- Android: The deprecated setter `ShareConfig.fallbackImageUrl` has been removed, use
+  `ShareConfig.fallbackImageAsset` instead.
+
+
 4.1.2 - 2019-03-19
 ==================
 
