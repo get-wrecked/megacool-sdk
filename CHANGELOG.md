@@ -46,6 +46,7 @@ outside the SDK reference docs.
 - iOS: Save to camera roll was accidentally enabled as an option in 4.1.0, but didn't actually do
   anything. This has been removed, but might be re-added later when we can actually make it work
   reliably.
+- Android: `Share` now implements `Serializable`.
 
 ## Deprecated
 - iOS: `MCLShareConfig.sourceView` has been deprecated in favor of
