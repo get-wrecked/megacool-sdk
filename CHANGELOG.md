@@ -3,12 +3,18 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
-4.2.1 - 2019-05-30
+4.2.2 - 2019-05-30
 ==================
 
 ## Fixed
 - iOS: The share was silently ignored if the active view controller when setting the default share
   config was different from the active one when calling `presentShare`.
+
+
+4.2.1 - 2019-05-30
+==================
+
+This release was yanked.
 
 
 4.2.0 - 2019-04-04
