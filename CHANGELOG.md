@@ -34,15 +34,15 @@ outside the SDK reference docs.
 
 ## Added
 - *Custom base urls*: Fully configure the url shared from the SDK.
-    Unity: Set the base url in the config panel.
-    iOS: Add the new base url as an associated domain, and set `MCLMegacoolConfig.baseUrl`.
-    Android: Configure the manifest to use the string variables `megacool_base_url_host` and
-             `megacool_base_url_path` instead of the old `megacool_identifier` and `megacool_host`,
-             and set these variables to your new base url.
+    - Unity: Set the base url in the config panel.
+    - iOS: Add the new base url as an associated domain, and set `MCLMegacoolConfig.baseUrl`.
+    - Android: Configure the manifest to use the string variables `megacool_base_url_host` and
+        `megacool_base_url_path` instead of the old `megacool_identifier` and `megacool_host`,
+        and set these variables to your new base url.
 - iOS: *Set where the share modal appears on iPads*. With the default behavior it appears in the
   upper left corner, but you can now make this appear next to the share button.
-  Unity: Set `ModalLocation` and `ModalPermittedArrowDirections` on the `MegacoolShareConfig`.
-  iOS: Set `popoverSourceView` (renamed from the old `sourceView`), `popoverSourceRect` and
+  - Unity: Set `ModalLocation` and `ModalPermittedArrowDirections` on the `MegacoolShareConfig`.
+  - iOS: Set `popoverSourceView` (renamed from the old `sourceView`), `popoverSourceRect` and
        `popoverPermittedArrowDirections` on the `MCLShareConfig`.
 - Unity Android can now be built for *arm64-v8a* in addition to the existing ABIs (armeabi-v7a and
   x86).
