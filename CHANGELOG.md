@@ -3,6 +3,52 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.3.0 - 2019-06-15
+==================
+
+The SDK can now also be used to capture and share still images in addition to GIFs! Either use the
+new `shareScreenshot` helper which will both capture and share a screenshot, or set `maxFrames = 1`
+on a recording and share it later. The latter approach enables you to show a preview of the
+screenshot before sharing it.
+
+## Fixed
+- Unity: Compilation error when building to platforms not supported by the SDK.
+- Unity: The sharing strategy set in the configuration panel was ignored, so the default was always used.
+- Android: The `maxFrames` property could be ignored if using the default playback frame rate.
+- Android: Some devices could fail to include mp4 media in the share, including only gifs instead.
+
+## Added
+- `shareScreenshot` to easily share screenshots.
+
+## Changed
+- `maxFrames` on the recording config can now be set to 1 to share a still image instead of a GIF.
+- Android: `setCaptureMethod` was missing nullability annotations on the parameters.
+- Android: We've bumped the version of okhttp we use from 3.4.2 to 3.12.1.
+- The SDK is now capable of loading the share behavior for each app like WhatsApp and Messages from
+  our backend, so that we can fix the behavior if an app changes how they handle shares without
+  having to push a new version of the SDK.
+- Optimized lots of sharing:
+  - Android:
+    - Facebook Lite when using the media strategy
+    - Facebook stories
+    - Instagram feed and stories
+    - KakaoTalk when using the media strategy
+    - Snapchat
+    - Twitter feed and DMs
+    - Viber
+  - iOS:
+    - Facebook Messenger when using the media strategy
+    - Facebook when using the media strategy
+    - Instagram
+
+## Deprecated
+- The dedicated share helpers for Twitter and Messenger have been deprecated as they were hard
+  to make work reliably cross-platform. We will probably reintroduce these later in a way that
+  enables both checking if the target is actually available on the device and enables targeting
+  more apps than what we have today. Use the generic `share()` or the share to mail and messages
+  helpers in the meantime.
+
+
 4.2.2 - 2019-05-30
 ==================
 
