@@ -3,6 +3,19 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.3.1 - 2019-07-16
+==================
+
+## Fixed
+- Unity: Compilation error on unsupported targets due to missing implementation of `ShareScreenshot`.
+- iOS: The `MCLReferralCodeCallback` (used with `-[Megacool getUserId]`) could be passed a `nil`
+  userId in some cases, despite annotations claiming otherwise. This no longer happens.
+
+## Added
+- Unity: `GetUserId` similar to what was already present on native iOS/Android to get the UserId for
+  the local user.
+
+
 4.3.0 - 2019-06-15
 ==================
 
