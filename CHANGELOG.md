@@ -3,6 +3,15 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+4.3.2 - 2019-08-26
+==================
+
+## Fixed
+- Unity: `ShareScreenshot` would crash if `StartRecording` or `CaptureFrame` hadn't already been called.
+- iOS: The "Copy GIF" and "Copy link" buttons could be visible at the same time, while the intention was
+  to only have one of these.
+
+
 4.3.1 - 2019-07-16
 ==================
 
