@@ -3,6 +3,61 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+5.0.0 - 2019-11-16
+==================
+
+Lots of changes under the hood in this one to improve performance, which should enable higher
+framerates with less CPU usage on most devices.
+
+## Removed
+- The deprecated share to Twitter and Messenger helpers.
+- The deprecated event API:
+    - iOS: The deprecated constructor and corresponding `MCLEvent` class.
+    - Android: The deprecated `start(Context, String, OnEventsReceivedListener)` constructor has
+      been removed, along with the corresponding `Event` class and the `setShareListener`. Use the
+      new constructors and the `EventListener` instead.
+    - Unity: Remove the deprecated `Megacool.On<Event>` listeners, use
+      `Megacool.Instance.LinkClicked` and similar instead.
+- iOS: The deprecated `MCLShareConfig.sourceView` field. Use `.popoverSourceView` instead.
+- Unity: The gif color table option has been removed from the configuration panel. This can still
+  be set programmatically through `Megacool.Instance.GifColorTable`.
+
+## Changed
+- The share config now enables attaching arbitrary json-compatible data instead of just strings:
+    - iOS: The type of `MCLShareConfig.data` has changed from
+      `NSDictionary<NSString *, NSString *> *` to `NSDictionary<NSString *, NSObject *> *`.
+    - Android: The type of `ShareConfig.data` has changed from `Map<String, String>`
+      to `Map<String, Object>`.
+    - Unity: The type of `MegacoolShareConfig.Data` has changed from `Dictionary<string, string>`
+      to `Dictionary<string, object`.
+- `getNumberOfFrames` now returns -1 instead of 0 if the recording wasn't found.
+- iOS: Added type annotations to `MCLShare.data`, changing it from `NSDictionary *` to
+  `NSDictionary<NSString *, NSObject *> *`.
+- iOS: `MCLShareConfig.message` was changed from `nullable` to `null_resettable`.
+- Android: `ShareConfig.getStrategy` was missing nullability annotations, added `@NonNull`.
+- Unity: The default gif color table has changed from fixed to dynamic.
+- Unity Android: Don't disable proguard obfuscation for Unity.
+
+## Fixed
+- Android: Media would appear to be a single frame if the device had been powered on for more than
+  25 days.
+- iOS: A crash when calling `presentShare` with last frame overlays and only a specific subset of
+  frames could be loaded from disk.
+- iOS: A race condition that could cause capture to stop given a specific sequence of interleaved
+  calls to `captureFrame`/`pauseRecording`.
+- iOS Unity: Memory leak when creating previews.
+- Android: Remove misleading log messages about failed file deletions.
+- Android: A race condition that could cause the old referral code to be used to create links after
+  a call to `resetIdentity()`.
+- Android: Previews could fail to be rendered for recordings with only a single frame.
+- Android: An infinite loop in a background thread if a preview is created with at least one frame
+  but none that are valid frames.
+- Android: Screenshot sharing from native Android apps using OpenGL capture failed to include any
+  media.
+- Unity: The frame rate set in the config panel could be ignored under ES2 or Metal if passing in a
+  config with the call to `StartRecording()`.
+
+
 4.3.2 - 2019-08-26
 ==================
 
