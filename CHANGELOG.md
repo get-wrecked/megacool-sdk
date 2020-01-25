@@ -3,6 +3,21 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+5.0.1 - 2020-01-25
+==================
+
+## Fixed
+- Unity Android: Fix native crash if trying to capture with Vulkan.
+- iOS: The filename of media shared is no longer a random hex string, but uses a filesystem-safe
+  sanitization of the app name.
+- Android: Apps with spaces in the name could hang when selecting an app to share to if the encode
+  failed.
+- Android: If encodes failed and there were no fallbacks the device might hang for up to 40s when
+  picking an app to share to. This has been reduced to 5s.
+- Android: Removed some uncommon non-mail apps that could show up in the shareToMail sheet.
+- Android: Some uncommon messaging apps didn't show up in the shareToMessages sheet.
+
+
 5.0.0 - 2019-11-16
 ==================
 
