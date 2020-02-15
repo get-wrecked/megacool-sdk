@@ -3,6 +3,14 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+5.0.2 - 2020-02-15
+==================
+
+## Fixed
+- Sharing screenshots without last frame overlays didn't work.
+- Android: Share behavior to Facebook, Instagram and Twitter have been improved.
+
+
 5.0.1 - 2020-01-25
 ==================
 
