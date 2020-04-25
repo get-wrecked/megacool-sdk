@@ -3,6 +3,17 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+5.0.3 - 2020-04-25
+==================
+
+## Fixed
+- iOS: Fix symbol errors due to name mangling if trying to use the FFI API from a C++ project.
+- iOS: Colors could be flipped if using newer version of Unity and the default Metal capture.
+- iOS: Speed up frame capture from Metal ~20%.
+- Unity Android: A build error on Unity 2019.3 and up due to API level 16 being deprecated.
+- Unity iOS: A build error on Unity 2019.3 and up due to a deprecated API.
+
+
 5.0.2 - 2020-02-15
 ==================
 
