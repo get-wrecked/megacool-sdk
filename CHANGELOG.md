@@ -6,7 +6,7 @@ The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 5.0.4 - 2020-09-18
 ==================
 
-## Fix
+## Fixed
 - Android: Some Android 10 devices would not show all the sharing options. The share function on
   these devices have been simplified to not use targeted sharing.
 - Android: Allow previews of share content in the share modal. They are more likely to appear for
