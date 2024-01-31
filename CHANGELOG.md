@@ -3,6 +3,21 @@ Changelog
 
 The Megacool SDK adheres to [semantic versioning.](http://semver.org)
 
+5.0.5 - 2024-01-31
+==================
+
+## Fixed
+- Android: Fix a sharing failure if using the simple sharing strategy (generally only used on Android SDK 29
+  and up) and sharing links only.
+- Android: Fix sharing failure on Android SDK 31 and up.
+- Unity Android: Fix crash if passing a `null` callback to `GetShares`.
+
+## Changed
+- Android: The target SDK version has been bumped from 27 to 33. With this comes two notable changes:
+  1) Apps that target SDK 31 and up needs to add `android:exported="true"` to the `ReferralReceiver` in `AndroidManifest.xml` for referrals and deep linking to continue working.
+  2) To make Megacool's sharing optimizations work we need to list apps with optimizations in the `AndroidManifest.xml`. Thus if you inspect the merged manifest for your package you will see a list of packages added under the `<queries>` section.
+
+
 5.0.4 - 2020-09-18
 ==================
 
